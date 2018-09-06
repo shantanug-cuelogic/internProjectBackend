@@ -52,9 +52,7 @@ class UserControllers {
                     res.json({ success: false, message: "Incorrect Answer" });
                 }
             }
-
         });
-
-    }
+      }
 }
 export default new UserControllers();

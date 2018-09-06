@@ -6,6 +6,7 @@ var logger = require('morgan');
 import mysql from 'mysql';
 
 import indexRoute from './routes/indexRoute';
+import postRoute from './Components/Posts/Routes/postRoute'
 
 
 var app = express();
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRoute);
+app.use('/post',postRoute);
 
 
 // catch 404 and forward to error handler
