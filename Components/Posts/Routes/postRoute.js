@@ -10,4 +10,5 @@ router.post('/category', postController.getCategoryPost);
 router.get('/popular', postController.getPopularPost);
 
 
+
 module.exports = router;

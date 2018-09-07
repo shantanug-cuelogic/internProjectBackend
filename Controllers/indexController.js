@@ -2,8 +2,12 @@ import { connection } from '../app';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel';
+var multer = require('multer');
 
 require('dotenv').config();
+
+
+
 
 class UserControllers {
 
@@ -54,5 +58,16 @@ class UserControllers {
             }
         });
       }
+
+      fileUpload = (req,res,next) => {
+          console.log("===> Put method file")
+            console.log(req.body);
+      }
+
+      imageUpload = (req,res,next) => {
+        console.log("===> Put method image")
+          console.log("===> upload file",req);
+          res.json({ "link": "path/to/image.jpg" })
+    }
 }
 export default new UserControllers();
