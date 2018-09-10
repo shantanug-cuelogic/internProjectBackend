@@ -8,6 +8,7 @@ import mysql from 'mysql';
 import indexRoute from './routes/indexRoute';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
+import commentRoute from './Components/Comments/Routes/commentRoutes';
 
 
 var app = express();
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRoute);
 app.use('/post',postRoute);
 app.use('/editor',editorRoute);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
