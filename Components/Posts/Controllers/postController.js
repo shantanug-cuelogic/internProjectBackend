@@ -5,8 +5,16 @@ class postController {
         postModel.createPost(req,res,next);
     }
 
+    updatePost = (req,res,next) => {
+        postModel.updatePost(req,res,next);
+    }
+
     getRecentPost =(req,res,next) => {
         postModel.getRecentPost(req,res,next);
+    }
+
+    getRecentlyUpdatedPosts = (req,res,next) => {
+        postModel.getRecentUpdatedPost(req,res,next);
     }
 
     getCategoryPost = (req,res,next) => {
@@ -19,6 +27,25 @@ class postController {
 
     getAllPosts = (req,res,next) => {
         postModel.getAllPosts(req,res,next);
+    }
+
+    getPostByYear = (req,res,next) => {
+        postModel.getPostsByYear(req,res,next);
+    }
+
+    getPostByMonth = (req,res,next) => {
+        postModel.getPostsByMonth(req,res,next);
+    }
+    getPostByDay = (req,res,next) => {
+        postModel.getPostsByDay(req,res,next);
+    }
+
+    deletePost = (req,res,next) => {
+        postModel.deletePost(req,res,next);
+    }
+
+    noofComments = (req,res,next) => {
+        postModel.noofComments(req,res,next);
     }
 }
 

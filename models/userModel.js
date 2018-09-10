@@ -27,32 +27,31 @@ class userModel {
         });
     }
 
-    
-    
-    loginUser =(req, res, next) => {
-        
+
+
+    loginUser = (req, res, next) => {
+
         let email = req.body.email;
         let queryString = "SELECT userid, email, passKey FROM users WHERE email = ?";
-        
-        return new Promise((resolve,reject) => {
+
+        return new Promise((resolve, reject) => {
             connection.query(queryString, [email], (err, queryResult) => {
                 console.log("in loginuser ==>");
-                
-                    if(queryResult.length === 0 ) {
-                        // res.json({ success: false, message: "User not found" });
-                        res.json({success:false, message:"User not found"})
-                       
-                    }
-                    else {
-                        console.log("queryResult==>",queryResult);
-                        // res.json(queryResult);
-                        resolve(queryResult);
-    
-                    }
-                  
+
+                if (queryResult.length === 0) {
+                    // res.json({ success: false, message: "User not found" });
+                    res.json({ success: false, message: "User not found" })
+
+                }
+                else {
+                    console.log("queryResult==>", queryResult);
+                    // res.json(queryResult);
+                    resolve(queryResult);
+
+                }
             });
         });
-        
+
     }
 
 

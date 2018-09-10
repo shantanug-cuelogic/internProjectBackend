@@ -4,25 +4,26 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 import mysql from 'mysql';
+import moment from 'moment';
 
 import indexRoute from './routes/indexRoute';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
-import commentRoute from './Components/Comments/Routes/commentRoutes';
+
 
 
 var app = express();
 
 const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'internProjectData'
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'internProjectData'
 });
 
 connection.connect();
 
-export { connection } ;
+export { connection };
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,17 +36,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRoute);
-app.use('/post',postRoute);
-app.use('/editor',editorRoute);
+app.use('/post', postRoute);
+app.use('/editor', editorRoute);
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
