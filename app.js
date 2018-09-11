@@ -6,7 +6,7 @@ var logger = require('morgan');
 import mysql from 'mysql';
 import moment from 'moment';
 
-import indexRoute from './routes/indexRoute';
+import userRoute from './Components/Users/Routes/userRoutes';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
 
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRoute);
+app.use('/', userRoute);
 app.use('/post', postRoute);
 app.use('/editor', editorRoute);
 

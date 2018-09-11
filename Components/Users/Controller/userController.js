@@ -1,7 +1,7 @@
-import { connection } from '../app';
+import { connection } from '../../../app'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import userModel from '../models/userModel';
+import userModel from '../Model/userModel';
 
 require('dotenv').config();
 

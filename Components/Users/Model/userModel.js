@@ -1,8 +1,7 @@
-import { connection } from '../app';
+import { connection } from '../../../app';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { resolve } from 'dns';
-import { rejects } from 'assert';
+
 
 class userModel {
 
@@ -13,8 +12,8 @@ class userModel {
             if (err) res.json({ success: false, message: err });
 
             else {
-                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,followers,securityQuestion, securityAnswer) VALUES (?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.followers, req.body.securityQuestion, req.body.securityAnswer]
+                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,followers,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.followers, req.body.securityQuestion, req.body.securityAnswer, 'xyz']
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });
@@ -43,7 +42,7 @@ class userModel {
                     res.json({ success: false, message: "User not found" })
                 }
                 else {
-                    console.log("queryResult==>", queryResult);
+
                     // res.json(queryResult);
                     resolve(queryResult);
                 }
@@ -74,8 +73,8 @@ class userModel {
         let values = [req.body.firstName, req.body.lastName, req.body.profileImage, req.body.userId];
 
         connection.query(queryString, values, (err, result, fields) => {
-            if(err) {
-                res.json({success:false , message : err});
+            if (err) {
+                res.json({ success: false, message: err });
             }
             else {
                 res.json(result);
@@ -83,16 +82,16 @@ class userModel {
         });
     }
 
-    deleteUser = (req,res,next) => {
+    deleteUser = (req, res, next) => {
         let queryString = "DELETE FROM users WHERE userId = ?";
         let values = [req.body.userId];
 
-        connection.query(queryString,values,(err,result,fields) => {
-            if(err) {
-                res.json({success:false,message:err});
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
             }
             else {
-                res.json({success:true, message:"User deleted"});
+                res.json({ success: true, message: "User deleted" });
             }
         });
     }
