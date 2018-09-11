@@ -37,7 +37,7 @@ class commentModel {
 
     deleteComment = (req,res,next) => {
         let queryString = 'DELETE FROM comments WHERE commentId = ?';
-        let values = [req.body.commentId];
+        let values = [req.body.commentIdtoDelete];
 
         connection.query(queryString,values,(err,result,fields)=> {
             if(err) {
@@ -51,7 +51,7 @@ class commentModel {
 
     updateComment = (req,res,next) => {
         let queryString = 'UPDATE comments SET commentContent = ? WHERE commentId = ?';
-        let values = [req.body.commentContent , req.body.commentId];
+        let values = [req.body.commentContent , req.body.commentIdtoUpdate];
 
         connection.query(queryString,values,(err, result, fields) => {
             if(err) {

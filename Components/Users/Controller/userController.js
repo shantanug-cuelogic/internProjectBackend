@@ -12,12 +12,14 @@ class UserControllers {
     }
 
     loginUser = async (req, res, next) => {
-        let queryResult = await userModel.loginUser(req, res, next)
+        let queryResult = await userModel.loginUser(req, res, next);
+        console.log("in login===>",queryResult[0]);
         bcrypt.compare(req.body.password, queryResult[0].passKey, (err, result) => {
             if (result) {
                 jwt.sign({
                     userId: queryResult[0].userId,
-                    email: queryResult[0].email
+                    email: queryResult[0].email,
+                    isAdmin : queryResult[0].isAdmin
                 }, process.env.SECRETKEY, { expiresIn: '1h' }, (err, token) => {
                     if (err) {
                         res.json({ success: false, message: err });

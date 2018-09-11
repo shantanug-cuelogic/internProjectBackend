@@ -18,7 +18,7 @@ class postModel {
 
     updatePost = (req, res, next) => {
         let queryString = 'UPDATE posts SET title =? , postContent = ?, category = ? , updateDate = ? , updateTimeStamp = ? WHERE postId = ?';
-        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(), req.body.postId];
+        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(), req.body.postIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -145,7 +145,7 @@ class postModel {
     deletePost = (req, res, next) => {
 
         let queryString = "DELETE FROM posts WHERE postId = ?";
-        let values = [req.body.postId]
+        let values = [req.body.postIdtoDelete]
         connection.query(queryString, values, (error, result, fields) => {
             if (error) {
                 res.json({ success: false, message: err });

@@ -12,8 +12,8 @@ class userModel {
             if (err) res.json({ success: false, message: err });
 
             else {
-                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,followers,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.followers, req.body.securityQuestion, req.body.securityAnswer, 'xyz']
+                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.securityQuestion, req.body.securityAnswer, 'xyz']
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });
@@ -31,11 +31,11 @@ class userModel {
     loginUser = (req, res, next) => {
 
         let email = req.body.email;
-        let queryString = "SELECT userid, email, passKey FROM users WHERE email = ?";
+        let queryString = "SELECT userId, email, passKey, isAdmin  FROM users WHERE email = ?";
 
         return new Promise((resolve, reject) => {
             connection.query(queryString, [email], (err, queryResult) => {
-                console.log("in loginuser ==>");
+            
 
                 if (queryResult.length === 0) {
                     // res.json({ success: false, message: "User not found" });
@@ -70,7 +70,7 @@ class userModel {
 
     updateUserProfile = (req, res, next) => {
         let queryString = "UPDATE users SET firstName = ?, lastName = ? , profileImage = ? WHERE userId = ?";
-        let values = [req.body.firstName, req.body.lastName, req.body.profileImage, req.body.userId];
+        let values = [req.body.firstName, req.body.lastName, req.body.profileImage, req.body.userIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -84,7 +84,7 @@ class userModel {
 
     deleteUser = (req, res, next) => {
         let queryString = "DELETE FROM users WHERE userId = ?";
-        let values = [req.body.userId];
+        let values = [req.body.userIdtoDelete];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
