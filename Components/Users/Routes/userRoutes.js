@@ -8,6 +8,6 @@ router.post('/login', userController.loginUser);
 router.post('/forgotPassword', userController.forgotPassword);
 router.get('/userprofile/:userId', userController.userProfile);
 router.put('/updateuserprofile', userController.updateUserProfile);
-router.put('/deleteuser',userController.deleteUser);
+router.put('/deleteuser', userController.deleteUser);
 
 module.exports = router;

@@ -43,7 +43,7 @@ class postModel {
     }
 
     getRecentUpdatedPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp DESC";
+        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp D   ESC";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -143,34 +143,28 @@ class postModel {
     }
 
     deletePost = (req, res, next) => {
-        let queryString = "DELETE FROM comments WHERE postId = ? ";
-        let values = [req.body.postId];
 
-        connection.query(queryString, values, (err, result, fields) => {
-            if (err) {
+        let queryString = "DELETE FROM posts WHERE postId = ?";
+        let values = [req.body.postId]
+        connection.query(queryString, values, (error, result, fields) => {
+            if (error) {
                 res.json({ success: false, message: err });
             }
             else {
-                let innerQueryString = "DELETE FROM posts WHERE postId = ?";
-                connection.query(innerQueryString, values, (error, inerQueryResult, innerQueryFields) => {
-                    if(error) {
-                        res.json({ success: false, message: err });
-                    }
-                    else {
-                        res.json(inerQueryResult);
-                    }
-                });
+                res.json(result);
             }
         });
     }
 
-    noofComments = (req,res,next) => {
+
+
+    noofComments = (req, res, next) => {
         let queryString = 'SELECT COUNT(commentId) AS Count FROM comments INNER JOIN posts ON posts.postId = comments.postId WHERE comments.postId = ?';
         let values = [req.params.postId];
 
-        connection.query(queryString,values,(err,result,fields) => {
-            if(err) {
-                res.json({success:false,message:err});
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
             }
             else {
                 res.json(result);
