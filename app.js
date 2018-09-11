@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 import mysql from 'mysql';
-import moment from 'moment';
-
 import userRoute from './Components/Users/Routes/userRoutes';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
