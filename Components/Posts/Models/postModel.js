@@ -31,7 +31,7 @@ class postModel {
     }
 
     getRecentPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY postTimeStamp DESC";
+        let queryString = "SELECT * FROM posts ORDER BY postTimeStamp DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -43,7 +43,7 @@ class postModel {
     }
 
     getRecentUpdatedPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp D   ESC";
+        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp DESC";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -68,7 +68,7 @@ class postModel {
     }
 
     getPopularPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY views DESC";
+        let queryString = "SELECT * FROM posts ORDER BY views DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -87,6 +87,23 @@ class postModel {
             }
             else {
                 res.json({ result })
+            }
+        })
+    }
+
+    getPost = (req,res,next) => {
+        let queryString = "SELECT * FROM posts WHERE postId = ?"
+        let values = req.params.postId;
+
+        connection.query(queryString,values ,(err,result,fields) =>{
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else if (result.length === 0) {
+                res.json({ success: false, message: "No Post found!! Try some other filter" });
+            }
+            else {
+                res.json(result);
             }
         })
     }

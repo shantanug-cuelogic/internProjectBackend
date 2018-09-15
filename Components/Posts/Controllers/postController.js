@@ -29,6 +29,10 @@ class postController {
         postModel.getAllPosts(req,res,next);
     }
 
+    getPost = (req,res,next) => {
+        postModel.getPost(req,res,next);
+    }
+
     getPostByYear = (req,res,next) => {
         postModel.getPostsByYear(req,res,next);
     }
