@@ -8,8 +8,6 @@ import userRoute from './Components/Users/Routes/userRoutes';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
 
-
-
 var app = express();
 
 const connection = mysql.createConnection({

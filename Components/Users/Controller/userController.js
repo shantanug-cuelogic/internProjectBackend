@@ -28,7 +28,9 @@ class UserControllers {
                         res.json({
                             success: true,
                             message: "Successfully Logged in",
-                            authToken: token
+                            authToken: token,
+                            userId : queryResult[0].userId
+
                         });
                     }
                 });
