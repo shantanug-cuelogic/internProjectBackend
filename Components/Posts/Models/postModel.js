@@ -79,6 +79,18 @@ class postModel {
         });
     }
 
+    getMostLikedPost = (req, res, next) => {
+        let queryString = "SELECT * FROM posts ORDER BY likes DESC LIMIT 5";
+        connection.query(queryString, (err, result, field) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                res.json({ result });
+            }
+        });
+    }
+
     getAllPosts = (req, res, next) => {
         let queryString = "SELECT * FROM posts";
         connection.query(queryString, (err, result, field) => {

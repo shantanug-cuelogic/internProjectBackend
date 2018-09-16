@@ -13,6 +13,7 @@ router.post('/create', authenticator.auth, postController.createPost);
 router.put('/update', authenticator.auth, privileges.updatePost, postController.updatePost);
 router.get('/recent', postController.getRecentPost);
 router.get('/recentupdated', postController.getRecentlyUpdatedPosts);
+router.get('/mostliked',postController.getMostLikedPost);
 router.get('/category/:category', postController.getCategoryPost);
 router.get('/year/:year', postController.getPostByYear);
 router.get('/month/:month', postController.getPostByMonth);

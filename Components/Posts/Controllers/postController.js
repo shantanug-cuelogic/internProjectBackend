@@ -25,6 +25,10 @@ class postController {
         postModel.getPopularPost(req,res,next);
     }
 
+    getMostLikedPost = (req,res,next) => {
+        postModel.getMostLikedPost(req,res,next);
+    }
+
     getAllPosts = (req,res,next) => {
         postModel.getAllPosts(req,res,next);
     }
