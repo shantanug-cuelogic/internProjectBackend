@@ -5,6 +5,7 @@ import privileges from '../../../Middleware/priveleges';
 
 let router = express.Router();
 
+router.post('/authenticate',authenticator.auth,userController.authenticateUser);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
 router.post('/forgotPassword', userController.forgotPassword);

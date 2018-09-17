@@ -11,6 +11,10 @@ class UserControllers {
         userModel.registerUser(req, res, next);
     }
 
+    authenticateUser = (req,res,next) =>{
+        res.json({success:true});
+    }
+
     loginUser = async (req, res, next) => {
         let queryResult = await userModel.loginUser(req, res, next);
         console.log("in login===>",queryResult[0]);
