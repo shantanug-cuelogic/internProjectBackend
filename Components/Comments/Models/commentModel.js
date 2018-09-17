@@ -19,7 +19,7 @@ class commentModel {
     }
 
     getAllComments = (req, res, next) => {
-        let queryString = 'SELECT * FROM comments WHERE postId = ?';
+        let queryString = 'SELECT users.firstName, users.lastName , comments.commentId,comments.commentContent FROM users INNER JOIN comments ON users.userId=comments.userId WHERE postId = ?';
         let values = [req.params.postId];
 
         connection.query(queryString, values, (err, result, fields) => {
