@@ -13,7 +13,7 @@ class commentModel {
             }
         
             else {
-                res.json(result);
+                res.json({success:true,message:result});
             }
         });
     }
@@ -44,7 +44,7 @@ class commentModel {
                 res.json({success:false, message: err});
             }
             else {
-                res.json(result);
+                res.json({success:true, message: fields});
             }
         })
     }
