@@ -25,7 +25,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ result });
+                res.json({ success:true, message:result });
             }
         });
     }
@@ -43,7 +43,7 @@ class postModel {
     }
 
     getRecentUpdatedPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp DESC";
+        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });

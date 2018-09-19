@@ -2,6 +2,8 @@ import express from 'express';
 import postController from '../Controllers/postController';
 import commentRoute from '../../Comments/Routes/commentRoutes';
 import ratingRoute from '../../Ratings/Routes/ratingRoutes';
+import likeRoute from '../../Likes/Routes/likeRoutes';
+import viewRoute from '../../Views/Routes/viewRoutes';
 import authenticator from '../../../Middleware/authenticationMiddleware';
 import privileges from '../../../Middleware/priveleges';
 
@@ -23,6 +25,6 @@ router.post('/delete', authenticator.auth, privileges.deletePost, postController
 router.get('/totalcomments/:postId', postController.noofComments);
 router.use('/comment', commentRoute);
 router.use('/ratings', ratingRoute);
-
-
+router.use('/like',likeRoute);
+router.use('/view/',viewRoute);
 module.exports = router;
