@@ -5,15 +5,16 @@ import jwt from 'jsonwebtoken';
 
 class userModel {
 
-    registerUser = (req, res, next) => {
-
+    registerUser = (req, res, next,path) => {
+        console.log("==================================================================================>");
+ 
         let pass = req.body.password;
         bcrypt.hash(pass, 4, (err, hash) => {
             if (err) res.json({ success: false, message: err });
 
             else {
                 let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.securityQuestion, req.body.securityAnswer, 'xyz']
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.securityQuestion, req.body.securityAnswer, path]
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });

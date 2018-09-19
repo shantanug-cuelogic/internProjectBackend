@@ -2,13 +2,38 @@ import { connection } from '../../../app'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userModel from '../Model/userModel';
+import multer from 'multer';
 
 require('dotenv').config();
 
 class UserControllers {
 
     registerUser = (req, res, next) => {
-        userModel.registerUser(req, res, next);
+
+        
+        var storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+              cb(null, 'public/profilePicture')
+            },
+            filename: (req, file, cb) => {
+              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+            }
+        });
+        var upload = multer({storage: storage}).single('file');
+
+        upload(req,res,(err) =>{
+            console.log("in error=========>")
+            if(err){
+                
+                res.json(err);
+            } else {
+                console.log("=====>",req.file.filename);
+                let profilePicturePath = /profilePicture/+req.file.filename;
+ //              userModel.registerUser(req, res, next,profilePicturePath);             
+              //  console.log("===>",req);
+            }
+        })
+
     }
 
     authenticateUser = (req,res,next) =>{

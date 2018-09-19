@@ -180,7 +180,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json(result);
+                res.json({success:true , message:result});
             }
         });
     }
