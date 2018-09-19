@@ -30,7 +30,7 @@ class commentModel {
                 res.json({success:false, message:"No comments available on this post"})
             }
             else {
-                res.json({ result });
+                res.json({ success:true,result });
             }
         });
     }
