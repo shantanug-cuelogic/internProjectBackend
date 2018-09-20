@@ -18,7 +18,7 @@ class likeModel {
 
     removeLikeToPost = (req, res, next) => {
         let queryString = 'DELETE FROM likes WHERE postId = ? AND userId = ?';
-        let values = [req.postIdToUnlike, req.userId]
+        let values = [req.body.postIdToUnlike, req.body.userId]
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -43,7 +43,27 @@ class likeModel {
             }
     })
 }
-    
+    allowedToLike = (req,res,next) => {
+        let queryString = 'SELECT * FROM likes WHERE postId = ? AND userId = ?'
+        let values = [req.body.postIdToLike, req.body.userId]
+
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                              
+                if(result.length === 0) {
+             
+                    res.json({ success: true, message: "Allowed to like" });
+                }
+                else {
+                    res.json({ success: false, message: "Already Liked" });;
+                }
+                //res.json(result.length);
+            }
+        })
+    }    
 
 
 }

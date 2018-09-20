@@ -12,5 +12,9 @@ class likeController {
     totalLikes = (req,res,next) => {
         likeModel.totalLikes(req,res,next);
     }
+
+    allowedToLike = (req,res,next)=> {
+        likeModel.allowedToLike(req,res,next);
+    }
 }   
 export default new likeController();
