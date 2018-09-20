@@ -6,8 +6,7 @@ import jwt from 'jsonwebtoken';
 class userModel {
 
     registerUser = (req, res, next,path) => {
-        console.log("==================================================================================>");
- 
+      
         let pass = req.body.password;
         bcrypt.hash(pass, 4, (err, hash) => {
             if (err) res.json({ success: false, message: err });

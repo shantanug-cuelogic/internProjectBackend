@@ -2,6 +2,18 @@ import { connection } from '../../../app';
 
 class likeModel {
 
+    updateLikeAndViews = (postId,req, res, next) => {
+        console.log("IN UPDATE=======>");
+         let queryString = "update posts set views = (select count(viewId) from views where postId = ?) , likes = (select count(likeId) from likes where postId = ?)where postId = ?;"
+         let values = [postId,postId,postId];
+         connection.query(queryString, values, (err, result, fields) => {
+             if (err) {
+                
+                 console.log(err)
+             }
+         });
+     }
+
     addLikeToPost = (req, res, next) => {
         let queryString = 'INSERT INTO likes (postId,userId) VALUES (?,?)';
         let values = [req.body.postIdToLike, req.body.userId];
@@ -11,9 +23,11 @@ class likeModel {
                 res.json({ success: false, message: err });
             }
             else {
+                this.updateLikeAndViews(req.body.postIdToLike);
                 res.json({ success: true, message: "Liked Successfully" });
             }
-        })
+        });
+        
     }
 
     removeLikeToPost = (req, res, next) => {
@@ -25,20 +39,23 @@ class likeModel {
                 res.json({ success: false, message: err });
             }
             else {
+                this.updateLikeAndViews(req.body.postIdToUnlike);
                 res.json({ success: true, message: "Unliked Successfully" });
             }
-        })
+        });
     }
 
     totalLikes = (req, res, next) => {
         let queryString = 'SELECT COUNT(likeId) as totalLikes FROM likes WHERE postId = ?';
         let values = req.params.postId;
+        this.updateLikeAndViews(req.params.postId);
 
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
+
                 res.json({ success: true, message: "Successfully", count: result[0].totalLikes });
             }
     })

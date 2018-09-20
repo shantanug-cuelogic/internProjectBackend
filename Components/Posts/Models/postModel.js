@@ -25,7 +25,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success:true, message:result });
+                res.json({ success: true, message: result });
             }
         });
     }
@@ -103,11 +103,25 @@ class postModel {
         })
     }
 
-    getPost = (req,res,next) => {
+    updateLikeAndViews = (postId,req, res, next) => {
+       console.log("IN UPDATE=======>");
+        let queryString = "update posts set views = (select count(viewId) from views where postId = ?) , likes = (select count(likeId) from likes where postId = ?)where postId = ?;"
+        let values = [postId,postId,postId];
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+               
+                console.log(err)
+            }
+        });
+    }
+
+    getPost = (req, res, next) => {
+        this.updateLikeAndViews(req.params.postId);
+
         let queryString = "SELECT * FROM posts WHERE postId = ?"
         let values = req.params.postId;
 
-        connection.query(queryString,values ,(err,result,fields) =>{
+        connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
@@ -115,6 +129,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
+                
                 res.json(result);
             }
         })
@@ -180,7 +195,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({success:true , message:result});
+                res.json({ success: true, message: result });
             }
         });
     }
