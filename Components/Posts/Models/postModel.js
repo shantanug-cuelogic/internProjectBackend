@@ -62,7 +62,7 @@ class postModel {
                 res.json({ success: false, message: "No post avavilable of this category" });
             }
             else {
-                res.json({ result });
+                res.json({ success:true, result:result });
             }
         });
     }
