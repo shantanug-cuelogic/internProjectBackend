@@ -104,7 +104,6 @@ class postModel {
     }
 
     updateLikeAndViews = (postId,req, res, next) => {
-       console.log("IN UPDATE=======>");
         let queryString = "update posts set views = (select count(viewId) from views where postId = ?) , likes = (select count(likeId) from likes where postId = ?)where postId = ?;"
         let values = [postId,postId,postId];
         connection.query(queryString, values, (err, result, fields) => {
@@ -206,6 +205,23 @@ class postModel {
         let queryString = 'SELECT COUNT(commentId) AS Count FROM comments INNER JOIN posts ON posts.postId = comments.postId WHERE comments.postId = ?';
         let values = [req.params.postId];
 
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                res.json(result);
+            }
+        });
+    }
+
+    searchPost = (req,res,next) => {
+        let queryString = `SELECT title,postId, MATCH(title) AGAINST ( ? IN BOOLEAN MODE) AS relevance
+        FROM posts
+        WHERE MATCH(title) AGAINST( ?  IN BOOLEAN MODE)
+        ORDER BY relevance DESC
+        LIMIT 10;`
+        let values = ["*"+req.query.search+"*", "*"+req.query.search+"*"];
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });

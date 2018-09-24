@@ -55,6 +55,12 @@ class postController {
     noofComments = (req,res,next) => {
         postModel.noofComments(req,res,next);
     }
+
+    searchPost = (req,res,next) => {
+
+        // console.log(req.query.search);
+        postModel.searchPost(req,res,next);
+    }
 }
 
 export default new postController();

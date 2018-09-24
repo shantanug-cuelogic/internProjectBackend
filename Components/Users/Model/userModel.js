@@ -96,6 +96,46 @@ class userModel {
         });
     }
 
+    noofLikes = (req,res,next) => {
+        let queryString = " select SUM(likes) as likeCount from posts where userId = ? "
+        let values =  req.params.userId;
+
+        connection.query(queryString,values,(err,result,fields) => {
+            if(err) {
+                console.log(err)
+            }
+            else {
+                res.json({success:true,likeCount:result[0].likeCount});
+            }
+        })
+    }
+    noofViews = (req,res,next) => {
+        let queryString = " select SUM(views) as viewCount from posts where userId = ? "
+        let values =  req.params.userId;
+
+        connection.query(queryString,values,(err,result,fields) => {
+            if(err) {
+                console.log(err)
+            }
+            else {
+                res.json({success:true,viewCount:result[0].viewCount});
+            }
+        })
+    }
+
+    noofPosts = (req,res,next) => {
+        let queryString = "Select COUNT(postId) as postCount FROM posts WHERE userId = ?"
+        let values =  req.params.userId;
+
+        connection.query(queryString,values,(err,result,fields) => {
+            if(err) {
+                console.log(err)
+            }
+            else {
+                res.json({success:true,postCount:result[0].postCount});
+            }
+        })
+    }
 
 
 }

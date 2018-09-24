@@ -23,6 +23,7 @@ router.get('/day/:day', postController.getPostByDay);
 router.get('/popular', postController.getPopularPost);
 router.post('/delete', authenticator.auth, privileges.deletePost, postController.deletePost);
 router.get('/totalcomments/:postId', postController.noofComments);
+router.get('/search',postController.searchPost);
 router.use('/comment', commentRoute);
 router.use('/ratings', ratingRoute);
 router.use('/like',likeRoute);

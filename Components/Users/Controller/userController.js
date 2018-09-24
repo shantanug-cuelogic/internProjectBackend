@@ -11,29 +11,29 @@ class UserControllers {
     registerUser = (req, res, next) => {
 
         
-        var storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-              cb(null, 'public/profilePicture')
-            },
-            filename: (req, file, cb) => {
-              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
-            }
-        });
-        var upload = multer({storage: storage}).single('file');
+//         var storage = multer.diskStorage({
+//             destination: (req, file, cb) => {
+//               cb(null, 'public/profilePicture')
+//             },
+//             filename: (req, file, cb) => {
+//               cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+//             }
+//         });
+//         var upload = multer({storage: storage}).single('file');
 
-        upload(req,res,(err) =>{
-            console.log("in error=========>")
-            if(err){
+//         upload(req,res,(err) =>{
+//             console.log("in error=========>")
+//             if(err){
                 
-                res.json(err);
-            } else {
-                console.log("=====>",req.file.filename);
-                let profilePicturePath = /profilePicture/+req.file.filename;
- //              userModel.registerUser(req, res, next,profilePicturePath);             
-              //  console.log("===>",req);
-            }
-        })
-
+//                 res.json(err);
+//             } else {
+//                 console.log("=====>",req.file.filename);
+//                 let profilePicturePath = /profilePicture/+req.file.filename;
+//  //              userModel.registerUser(req, res, next,profilePicturePath);             
+//               //  console.log("===>",req);
+//             }
+//         })
+        userModel.registerUser(req, res, next,'xyz');
     }
 
     authenticateUser = (req,res,next) =>{
@@ -98,6 +98,15 @@ class UserControllers {
 
     deleteUser = (req, res, next) => {
         userModel.deleteUser(req, res, next);
+    }
+    noofLikes = (req,res,next) => {
+        userModel.noofLikes(req,res,next);
+    }
+    noofViews = (req,res,next) => {
+        userModel.noofViews(req,res,next);
+    }
+    noofPosts = (req,res,next) => {
+        userModel.noofPosts(req,res,next);
     }
 
 }
