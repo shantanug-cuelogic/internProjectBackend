@@ -36,7 +36,33 @@ class postController {
     }
 
     updatePost = (req,res,next) => {
-        postModel.updatePost(req,res,next);
+        var storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+              cb(null, 'public/thumbnail')
+            },
+            filename: (req, file, cb) => {
+              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+            }
+        });
+        var upload = multer({storage: storage}).single('file');
+
+        upload(req,res,(err) =>{
+            
+            if(err){
+                
+                res.json(err);
+            } else {
+               
+                let thumbnail = '/thumbnail/'+req.file.filename;
+              
+                postModel.updatePost(req,res,next,thumbnail);           
+              //  console.log("===>",req);
+            }
+        })
+
+
+
+
     }
 
     getRecentPost =(req,res,next) => {
