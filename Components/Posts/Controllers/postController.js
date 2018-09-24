@@ -1,8 +1,38 @@
 import postModel from '../Models/postModel';
+import multer from 'multer';
 
 class postController {
     createPost = (req, res, next) => {
-        postModel.createPost(req,res,next);
+
+
+        var storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+              cb(null, 'public/thumbnail')
+            },
+            filename: (req, file, cb) => {
+              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+            }
+        });
+        var upload = multer({storage: storage}).single('file');
+
+        upload(req,res,(err) =>{
+            
+            if(err){
+                
+                res.json(err);
+            } else {
+               
+                let thumbnail = '/thumbnail/'+req.file.filename;
+              
+             postModel.createPost(req,res,next,thumbnail);           
+              //  console.log("===>",req);
+            }
+        })
+
+
+
+
+       
     }
 
     updatePost = (req,res,next) => {
