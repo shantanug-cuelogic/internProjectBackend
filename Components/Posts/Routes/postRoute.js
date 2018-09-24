@@ -11,7 +11,7 @@ let router = express.Router();
 
 router.get('/', postController.getAllPosts);
 router.get('/getpost/:postId',postController.getPost);
-router.post('/create', authenticator.auth, postController.createPost);
+router.post('/create', postController.createPost);
 router.put('/update', authenticator.auth, privileges.updatePost, postController.updatePost);
 router.get('/recent', postController.getRecentPost);
 router.get('/recentupdated', postController.getRecentlyUpdatedPosts);

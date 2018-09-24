@@ -13,7 +13,7 @@ class userModel {
 
             else {
                 let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, req.body.isAdmin, req.body.securityQuestion, req.body.securityAnswer, path]
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, 0, req.body.securityQuestion, req.body.securityAnswer, path]
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });

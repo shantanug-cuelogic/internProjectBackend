@@ -2,10 +2,10 @@ import { connection } from '../../../app';
 import moment from 'moment';
 
 class postModel {
-    createPost = (req, res, next) => {
+    createPost = (req, res, next,thumbnail) => {
         let timeStamp = moment().unix();
-        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate) VALUES (?,?,?,?,?,?,?,?)";
-        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY')];
+        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail) VALUES (?,?,?,?,?,?,?,?,?)";
+        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail];
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
