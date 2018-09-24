@@ -216,12 +216,13 @@ class postModel {
     }
 
     searchPost = (req,res,next) => {
-        let queryString = `SELECT title,postId, MATCH(title) AGAINST ( ? IN BOOLEAN MODE) AS relevance
-        FROM posts
-        WHERE MATCH(title) AGAINST( ?  IN BOOLEAN MODE)
-        ORDER BY relevance DESC
-        LIMIT 10;`
-        let values = ["*"+req.query.search+"*", "*"+req.query.search+"*"];
+        // let queryString = `SELECT title,postId, MATCH(title) AGAINST ( ? IN BOOLEAN MODE) AS relevance
+        // FROM posts
+        // WHERE MATCH(title) AGAINST( ?  IN NATURAL LANGUAGE MODE)
+        // ORDER BY relevance DESC
+        // LIMIT 10;`
+        let queryString = 'SELECT * FROM posts WHERE title LIKE ?'
+        let values = ["%"+req.query.search+"%", ];
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
