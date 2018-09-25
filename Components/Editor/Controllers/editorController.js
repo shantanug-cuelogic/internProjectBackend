@@ -23,7 +23,7 @@ class editorController {
             if(err){
                 res.json(err);
             } else {
-                console.log("in image upload ===> ",req.file);
+               
                 res.json({"link" : /images/+req.file.filename});
             }
         })

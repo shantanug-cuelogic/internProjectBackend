@@ -7,115 +7,84 @@ class postController {
 
         var storage = multer.diskStorage({
             destination: (req, file, cb) => {
-              cb(null, 'public/thumbnail')
+                cb(null, 'public/thumbnail')
             },
             filename: (req, file, cb) => {
-              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+                cb(null, file.fieldname + '-' + Date.now() + ".jpg")
             }
         });
-        var upload = multer({storage: storage}).single('file');
+        var upload = multer({ storage: storage }).single('file');
 
-        upload(req,res,(err) =>{
-            
-            if(err){
-                
+        upload(req, res, (err) => {
+
+            if (err) {
+
                 res.json(err);
             } else {
-               
-                let thumbnail = '/thumbnail/'+req.file.filename;
-              
-             postModel.createPost(req,res,next,thumbnail);           
-              //  console.log("===>",req);
+
+                let thumbnail = '/thumbnail/' + req.file.filename;
+
+                postModel.createPost(req, res, next, thumbnail);
+                //  console.log("===>",req);
             }
         })
-
-
-
-
-       
     }
 
-    updatePost = (req,res,next) => {
-        var storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-              cb(null, 'public/thumbnail')
-            },
-            filename: (req, file, cb) => {
-              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
-            }
-        });
-        var upload = multer({storage: storage}).single('file');
-
-        upload(req,res,(err) =>{
-            
-            if(err){
-                
-                res.json(err);
-            } else {
-               
-                let thumbnail = '/thumbnail/'+req.file.filename;
-              
-                postModel.updatePost(req,res,next,thumbnail);           
-              //  console.log("===>",req);
-            }
-        })
-
-
-
-
+    updatePost = (req, res, next) => {
+        postModel.updatePost(req, res, next);
     }
 
-    getRecentPost =(req,res,next) => {
-        postModel.getRecentPost(req,res,next);
+    getRecentPost = (req, res, next) => {
+        postModel.getRecentPost(req, res, next);
     }
 
-    getRecentlyUpdatedPosts = (req,res,next) => {
-        postModel.getRecentUpdatedPost(req,res,next);
+    getRecentlyUpdatedPosts = (req, res, next) => {
+        postModel.getRecentUpdatedPost(req, res, next);
     }
 
-    getCategoryPost = (req,res,next) => {
-        postModel.getCategoryPost(req,res,next);
+    getCategoryPost = (req, res, next) => {
+        postModel.getCategoryPost(req, res, next);
     }
 
-    getPopularPost = (req,res,next) => {
-        postModel.getPopularPost(req,res,next);
+    getPopularPost = (req, res, next) => {
+        postModel.getPopularPost(req, res, next);
     }
 
-    getMostLikedPost = (req,res,next) => {
-        postModel.getMostLikedPost(req,res,next);
+    getMostLikedPost = (req, res, next) => {
+        postModel.getMostLikedPost(req, res, next);
     }
 
-    getAllPosts = (req,res,next) => {
-        postModel.getAllPosts(req,res,next);
+    getAllPosts = (req, res, next) => {
+        postModel.getAllPosts(req, res, next);
     }
 
-    getPost = (req,res,next) => {
-        postModel.getPost(req,res,next);
+    getPost = (req, res, next) => {
+        postModel.getPost(req, res, next);
     }
 
-    getPostByYear = (req,res,next) => {
-        postModel.getPostsByYear(req,res,next);
+    getPostByYear = (req, res, next) => {
+        postModel.getPostsByYear(req, res, next);
     }
 
-    getPostByMonth = (req,res,next) => {
-        postModel.getPostsByMonth(req,res,next);
+    getPostByMonth = (req, res, next) => {
+        postModel.getPostsByMonth(req, res, next);
     }
-    getPostByDay = (req,res,next) => {
-        postModel.getPostsByDay(req,res,next);
-    }
-
-    deletePost = (req,res,next) => {
-        postModel.deletePost(req,res,next);
+    getPostByDay = (req, res, next) => {
+        postModel.getPostsByDay(req, res, next);
     }
 
-    noofComments = (req,res,next) => {
-        postModel.noofComments(req,res,next);
+    deletePost = (req, res, next) => {
+        postModel.deletePost(req, res, next);
     }
 
-    searchPost = (req,res,next) => {
+    noofComments = (req, res, next) => {
+        postModel.noofComments(req, res, next);
+    }
+
+    searchPost = (req, res, next) => {
 
         // console.log(req.query.search);
-        postModel.searchPost(req,res,next);
+        postModel.searchPost(req, res, next);
     }
 }
 

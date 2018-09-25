@@ -10,33 +10,35 @@ class UserControllers {
 
     registerUser = (req, res, next) => {
 
-        
-        var storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-              cb(null, 'public/profilePicture')
-            },
-            filename: (req, file, cb) => {
-              cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
-            }
-        });
-        var upload = multer({storage: storage}).single('file');
+      
+        // var storage = multer.diskStorage({
+        //     destination: (req, file, cb) => {
+        //       cb(null, 'public/profilePicture')
+        //     },
+        //     filename: (req, file, cb) => {
+        //       cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
+        //     }
+        // });
+        // var upload = multer({storage: storage}).single('file');
 
-        upload(req,res,(err) =>{
+        // upload(req,res,(err) =>{
             
-            if(err){
+        //     if(err){
                 
-                res.json(err);
-            } else {
-               
-                let profilePicturePath = /profilePicture/+req.file.filename;
+        //         res.json(err);
+        //     } else {
+                
+        //         let profilePicturePath = /profilePicture/+req.file.filename;
               
-                userModel.registerUser(req, res, next,profilePicturePath);             
-              //  console.log("===>",req);
-            }
-        })
+        //         userModel.registerUser(req, res, next,profilePicturePath);             
+        //       //  console.log("===>",req);
+        //     }
+        // })
        // userModel.registerUser(req, res, next,'xyz');
 
     //    console.log("=========================>",req.formdata);
+
+    userModel.registerUser(req, res, next,'xyz'); 
     }
 
     authenticateUser = (req,res,next) =>{

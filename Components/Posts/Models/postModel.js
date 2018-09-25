@@ -16,9 +16,9 @@ class postModel {
         });
     }
 
-    updatePost = (req, res, next ,thumbnail) => {
-        let queryString = 'UPDATE posts SET title =? , postContent = ?, category = ? , updateDate = ? , updateTimeStamp = ?, thumbnail = ? WHERE postId = ?';
-        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(),thumbnail ,req.body.postIdtoUpdate];
+    updatePost = (req, res, next) => {
+        let queryString = 'UPDATE posts SET title =? , postContent = ?, category = ? , updateDate = ? , updateTimeStamp = ? WHERE postId = ?';
+        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(),req.body.postIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -129,7 +129,7 @@ class postModel {
             }
             else {
                 
-                res.json(result);
+                res.json({ success:true, result:result });
             }
         })
     }
