@@ -11,7 +11,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success: true, message: "Post created successfully" });
+                res.json({ success: true, message: "Post created successfully" , id: result.insertId });
             }
         });
     }

@@ -15,4 +15,5 @@ router.put('/deleteuser', authenticator.auth, privileges.deleteUser, userControl
 router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);
 router.get('/totalposts/:userId',userController.noofPosts);
+router.get('/totalcomments/:userId',userController.noofComments);
 module.exports = router;

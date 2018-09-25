@@ -38,7 +38,7 @@ class UserControllers {
 
     //    console.log("=========================>",req.formdata);
 
-    userModel.registerUser(req, res, next,'xyz'); 
+    userModel.registerUser(req, res, next,'/require/userimage.jpg'); 
     }
 
     authenticateUser = (req,res,next) =>{
@@ -112,6 +112,9 @@ class UserControllers {
     }
     noofPosts = (req,res,next) => {
         userModel.noofPosts(req,res,next);
+    }
+    noofComments = (req,res,next) => {
+        userModel.noofComments(req,res,next);
     }
 
 }

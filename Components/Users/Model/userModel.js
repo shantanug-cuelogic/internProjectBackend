@@ -104,6 +104,9 @@ class userModel {
             if(err) {
                 console.log(err)
             }
+            else if(result[0].likeCount ===null) {
+                res.json({success:false,likeCount:0}); 
+            }
             else {
                 res.json({success:true,likeCount:result[0].likeCount});
             }
@@ -116,6 +119,9 @@ class userModel {
         connection.query(queryString,values,(err,result,fields) => {
             if(err) {
                 console.log(err)
+            }
+            else if(result[0].viewCount===null) {
+                res.json({success:false,viewCount:0});
             }
             else {
                 res.json({success:true,viewCount:result[0].viewCount});
@@ -133,6 +139,19 @@ class userModel {
             }
             else {
                 res.json({success:true,postCount:result[0].postCount});
+            }
+        })
+    }
+    noofComments = (req,res,next) => {
+        let queryString = " select count(comments.commentId) as commentCount from comments  inner join posts on comments.postId=posts.postId where posts.userId= ?"
+        let values =  req.params.userId;
+
+        connection.query(queryString,values,(err,result,fields) => {
+            if(err) {
+                console.log(err)
+            }
+            else {
+                res.json({success:true,commentCount:result[0].commentCount});
             }
         })
     }
