@@ -9,6 +9,8 @@ router.post('/authenticate',authenticator.auth,userController.authenticateUser);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
 router.post('/forgotPassword', userController.forgotPassword);
+router.post('/checkforgettoken', userController.checkForgetToken);
+router.put('/changepassword',userController.changePassword);
 router.get('/userprofile/:userId', userController.userProfile);
 router.put('/updateuserprofile', authenticator.auth, privileges.updateUser, userController.updateUserProfile);
 router.put('/deleteuser', authenticator.auth, privileges.deleteUser, userController.deleteUser);

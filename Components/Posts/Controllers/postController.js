@@ -25,7 +25,7 @@ class postController {
                 let thumbnail = '/thumbnail/' + req.file.filename;
 
                 postModel.createPost(req, res, next, thumbnail);
-                //  console.log("===>",req);
+                
             }
         })
     }
