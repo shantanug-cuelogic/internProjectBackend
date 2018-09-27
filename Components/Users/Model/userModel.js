@@ -121,7 +121,7 @@ class userModel {
 
 
     userProfile = (req, res, next) => {
-        let queryString = 'SELECT userId , firstName , lastName , email, isAdmin , profileImage FROM users WHERE userId = ?';
+        let queryString = 'SELECT userId , firstName , lastName , email, isAdmin , profileImage, gender FROM users WHERE userId = ?';
         let values = req.params.userId;
 
         connection.query(queryString, values, (err, result, fields) => {
@@ -138,16 +138,16 @@ class userModel {
         });
     }
 
-    updateUserProfile = (req, res, next) => {
-        let queryString = "UPDATE users SET firstName = ?, lastName = ? , profileImage = ? WHERE userId = ?";
-        let values = [req.body.firstName, req.body.lastName, req.body.profileImage, req.body.userIdtoUpdate];
+    updateUserProfile = (req, res, next ,profileImage ) => {
+        let queryString = "UPDATE users SET firstName = ?, lastName = ? , profileImage = ? , gender = ? WHERE userId = ?";
+        let values = [req.body.firstName, req.body.lastName, profileImage,req.body.gender, req.body.userIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json(result);
+                res.json({success:true, message:"Updated Succesfully" , profileImagePath:profileImage });    
             }
         });
     }

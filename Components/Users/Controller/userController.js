@@ -11,35 +11,6 @@ require('dotenv').config();
 class UserControllers {
 
     registerUser = (req, res, next) => {
-
-
-        // var storage = multer.diskStorage({
-        //     destination: (req, file, cb) => {
-        //       cb(null, 'public/profilePicture')
-        //     },
-        //     filename: (req, file, cb) => {
-        //       cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
-        //     }
-        // });
-        // var upload = multer({storage: storage}).single('file');
-
-        // upload(req,res,(err) =>{
-
-        //     if(err){
-
-        //         res.json(err);
-        //     } else {
-
-        //         let profilePicturePath = /profilePicture/+req.file.filename;
-
-        //         userModel.registerUser(req, res, next,profilePicturePath);             
-        //       //  console.log("===>",req);
-        //     }
-        // })
-        // userModel.registerUser(req, res, next,'xyz');
-
-        //    console.log("=========================>",req.formdata);
-
         userModel.registerUser(req, res, next, '/require/userimage.jpg');
     }
 
@@ -77,11 +48,11 @@ class UserControllers {
         });
     }
 
-    changePassword = (req,res,next) => {
-        userModel.changePassword(req,res,next);
+    changePassword = (req, res, next) => {
+        userModel.changePassword(req, res, next);
     }
 
-    passwordTemplate = (TOKEN,firstName) => {
+    passwordTemplate = (TOKEN, firstName) => {
         return (
             `<head>
             <title>Rating Reminder</title>
@@ -151,7 +122,7 @@ class UserControllers {
             </tr>
             <tr>
             <td style="-ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #9095a2; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 16px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: -0.18px; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
-                                                  You're receiving this e-mail because you requested a password reset for your Postmates account.
+                                                  You're receiving this e-mail because you requested a password reset for your BlogIt account.
                                                 </td>
             </tr>
             <tr>
@@ -174,9 +145,6 @@ class UserControllers {
             </td>
             </tr>
             </tbody></table>
-            
-            
-            
             </body>`
         )
     }
@@ -188,7 +156,7 @@ class UserControllers {
 
             const tokgen = new uuidToken(); // Default is a 128-bit token encoded in base58
             const token = tokgen.generate();
-            let emailTemplate = this.passwordTemplate("http://localhost:3000/recoverpassword/" + token,isUser[0].firstName);
+            let emailTemplate = this.passwordTemplate("http://localhost:3000/recoverpassword/" + token, isUser[0].firstName);
             nodemailer.createTestAccount((err, account) => {
                 // create reusable transporter object using the default SMTP transport
                 let transporter = nodemailer.createTransport({
@@ -222,8 +190,8 @@ class UserControllers {
         }
     }
 
-    checkForgetToken = (req,res,next) => {
-        userModel.checkForgetPasswordToken(req,res,next);
+    checkForgetToken = (req, res, next) => {
+        userModel.checkForgetPasswordToken(req, res, next);
     }
 
     userProfile = (req, res, next) => {
@@ -231,7 +199,31 @@ class UserControllers {
     }
 
     updateUserProfile = (req, res, next) => {
-        userModel.updateUserProfile(req, res, next);
+        var storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, 'public/profilePicture')
+            },
+            filename: (req, file, cb) => {
+                cb(null, file.fieldname + '-' + Date.now() + ".jpg")
+            }
+        });
+        var upload = multer({ storage: storage }).single('file');
+
+        upload(req, res, (err) => {
+
+            if (err) {
+                res.json(err);
+            } else {
+
+                if (req.file === undefined) {
+                    userModel.updateUserProfile(req, res, next, req.body.profileImage);
+                }
+                else {
+                    let profilePicture = '/profilePicture/' + req.file.filename;
+                    userModel.updateUserProfile(req, res, next, profilePicture);
+                }
+            }
+        })
     }
 
     deleteUser = (req, res, next) => {

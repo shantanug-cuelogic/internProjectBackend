@@ -12,7 +12,7 @@ router.post('/forgotPassword', userController.forgotPassword);
 router.post('/checkforgettoken', userController.checkForgetToken);
 router.put('/changepassword',userController.changePassword);
 router.get('/userprofile/:userId', userController.userProfile);
-router.put('/updateuserprofile', authenticator.auth, privileges.updateUser, userController.updateUserProfile);
+router.put('/updateuserprofile', /* authenticator.auth, privileges.updateUser,*/ userController.updateUserProfile);
 router.put('/deleteuser', authenticator.auth, privileges.deleteUser, userController.deleteUser);
 router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);

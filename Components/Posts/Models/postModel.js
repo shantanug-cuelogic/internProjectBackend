@@ -55,7 +55,7 @@ class postModel {
     }
 
     getCategoryPost = (req, res, next) => {
-        console.log("===>", req.params.category);
+       
         let queryString = "SELECT * FROM posts WHERE category = ?";
         connection.query(queryString, req.params.category, (err, result, field) => {
             if (result.length === 0) {
