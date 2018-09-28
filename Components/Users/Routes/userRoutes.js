@@ -2,6 +2,7 @@ import express from 'express';
 import userController from '../Controller/userController';
 import authenticator from '../../../Middleware/authenticationMiddleware';
 import privileges from '../../../Middleware/priveleges';
+import followerRoute from '../../Followers/Routes/FollowerRoutes';
 
 let router = express.Router();
 
@@ -18,4 +19,5 @@ router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);
 router.get('/totalposts/:userId',userController.noofPosts);
 router.get('/totalcomments/:userId',userController.noofComments);
+router.use('/follower',followerRoute);
 module.exports = router;
