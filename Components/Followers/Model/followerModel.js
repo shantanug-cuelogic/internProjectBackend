@@ -10,7 +10,7 @@ class FollowerModel {
             res.json({success:false, message:" Already following"});
         }
         else if (allowed === true) {
-            let queryString = " INSERT INTO followerData(userId, followerId, followTimeStamp ) VALUES ( ? , ? , ?)";
+            let queryString = "CALL addFollower(?,?,?)";
             let values = [req.body.userIdToFollow, req.body.userId, moment().unix()];
 
             connection.query(queryString, values, (err, result, field) => {
@@ -25,7 +25,8 @@ class FollowerModel {
                             res.json({ success: false, message: err })
                         }
                         else {
-                            res.json({ success: true, message: `Followed ${innerresult[0].firstName}Succesfully` })
+
+                            res.json({ success: true, message: `Followed ${innerresult[0].firstName} Succesfully` })
                         }
                     });
                 }
@@ -39,7 +40,7 @@ class FollowerModel {
         let allowed = await this.checkifExist(req.body.userId,req.body.userIdToUnfollow);
         
       if(allowed === false) {
-        let queryString = "DELETE FROM followerData WHERE userId = ? AND followerId = ? ";
+        let queryString = "CALL unfollow(?,?)";
         let values = [req.body.userIdToUnfollow, req.body.userId];
 
         connection.query(queryString, values, (err, result, field) => {
@@ -54,7 +55,7 @@ class FollowerModel {
                         res.json({ success: false, message: err })
                     }
                     else {
-                        res.json({ success: true, message: `Unfollowed ${innerresult[0].firstName}Succesfully` })
+                        res.json({ success: true, message: `Unfollowed ${innerresult[0].firstName} Succesfully` })
                     }
                 });
             }

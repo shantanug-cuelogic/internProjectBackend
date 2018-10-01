@@ -11,7 +11,19 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success: true, message: "Post created successfully" , id: result.insertId });
+               console.log("Increate post") 
+                let values = [req.body.userId, 2, result.insertId, moment().unix(),result.insertId];
+                connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
+                    if (err) {
+                        res.json({ success: false, message: err });
+                    }
+                    else {
+                        res.json({ success: true, message: "Post created successfully" , id: result.insertId });
+                    }
+                })
+
+
+                //res.json({ success: true, message: "Post created successfully" , id: result.insertId });
             }
         });
     }

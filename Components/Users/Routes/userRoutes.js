@@ -15,6 +15,7 @@ router.put('/changepassword',userController.changePassword);
 router.get('/userprofile/:userId', userController.userProfile);
 router.put('/updateuserprofile', /* authenticator.auth, privileges.updateUser,*/ userController.updateUserProfile);
 router.put('/deleteuser', authenticator.auth, privileges.deleteUser, userController.deleteUser);
+router.get('/recentactivity/:userId', userController.getRecentActivity);
 router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);
 router.get('/totalposts/:userId',userController.noofPosts);

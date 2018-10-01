@@ -1,4 +1,5 @@
 import { connection } from '../../../app';
+import moment from 'moment';
 
 class likeModel {
 
@@ -24,7 +25,18 @@ class likeModel {
             }
             else {
                 this.updateLikeAndViews(req.body.postIdToLike);
-                res.json({ success: true, message: "Liked Successfully" });
+
+                let values = [req.body.userId, 3, result.insertId, moment().unix(),req.body.postIdToLike];
+                connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
+                    if (err) {
+                        res.json({ success: false, message: err });
+                    }
+                    else {
+                        res.json({ success: true, message: "Liked the Post" });
+                    }
+                })
+
+               // res.json({ success: true, message: "Liked Successfully" });
             }
         });
         

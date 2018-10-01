@@ -32,11 +32,12 @@ class UserControllers {
                         res.json({ success: false, message: err });
                     }
                     else {
+                        console.log(queryResult);
                         res.json({
                             success: true,
                             message: "Successfully Logged in",
                             authToken: token,
-                            userId: queryResult[0].userId
+                            userDetails:queryResult[0] 
 
                         });
                     }
@@ -224,6 +225,10 @@ class UserControllers {
                 }
             }
         })
+    }
+
+    getRecentActivity = (req,res,next) => {
+        userModel.getRecentActivity(req,res,next);
     }
 
     deleteUser = (req, res, next) => {

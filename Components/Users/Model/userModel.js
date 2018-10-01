@@ -5,6 +5,10 @@ import jwt from 'jsonwebtoken';
 
 class userModel {
 
+
+    
+
+
     registerUser = (req, res, next, path) => {
 
         let pass = req.body.password;
@@ -12,8 +16,8 @@ class userModel {
             if (err) res.json({ success: false, message: err });
 
             else {
-                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage ) VALUES (?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, 0, /*req.body.securityQuestion*/"xyz", /*req.body.securityAnswer*/ "xyz", path]
+                let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage, followers ) VALUES (?,?,?,?,?,?,?,?,?)";
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, 0, /*req.body.securityQuestion*/"xyz", /*req.body.securityAnswer*/ "xyz", path, 0]
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });
@@ -52,7 +56,7 @@ class userModel {
     loginUser = (req, res, next) => {
 
         let email = req.body.email;
-        let queryString = "SELECT userId, email, passKey, isAdmin  FROM users WHERE email = ?";
+        let queryString = "SELECT userId, email, passKey, isAdmin , followers, firstName , lastName, profileImage,gender  FROM users WHERE email = ?";
 
         return new Promise((resolve, reject) => {
             connection.query(queryString, [email], (err, queryResult) => {
@@ -138,16 +142,16 @@ class userModel {
         });
     }
 
-    updateUserProfile = (req, res, next ,profileImage ) => {
+    updateUserProfile = (req, res, next, profileImage) => {
         let queryString = "UPDATE users SET firstName = ?, lastName = ? , profileImage = ? , gender = ? WHERE userId = ?";
-        let values = [req.body.firstName, req.body.lastName, profileImage,req.body.gender, req.body.userIdtoUpdate];
+        let values = [req.body.firstName, req.body.lastName, profileImage, req.body.gender, req.body.userIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({success:true, message:"Updated Succesfully" , profileImagePath:profileImage });    
+                res.json({ success: true, message: "Updated Succesfully", profileImagePath: profileImage });
             }
         });
     }
@@ -222,6 +226,23 @@ class userModel {
             }
             else {
                 res.json({ success: true, commentCount: result[0].commentCount });
+            }
+        })
+    }
+
+    getRecentActivity = (req, res, next) => {
+        let queryString = "CALL GetRecentActivity( ? )";
+        let values = req.params.userId;
+
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else if (result[0].length === 0) {
+                res.json({ success: false, message: "No recent activity to show" });
+            }
+            else {
+                res.json({ success: true, result: result[0] });
             }
         })
     }
