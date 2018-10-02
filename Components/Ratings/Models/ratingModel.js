@@ -4,7 +4,7 @@ class ratingModel {
 
     giveRating = (req, res, next) => {
 
-
+        console.log("=================>",req.body.rating)
         let queryString = 'SELECT * FROM ratings WHERE userId= ? AND postId = ?';
         let values = [req.body.userId, req.body.postId];
 
@@ -22,19 +22,19 @@ class ratingModel {
                             res.json({ success: false, message: err });
                         }
                         else {
-                            res.json(result);
+                            res.json({success: true, result:result});
                         }
                     });
                 }
                 else {
-                    let innerQueryString = 'UPDATE ratings SET rating = ? WHERE userId = ?';
-                    let innerValues = [req.body.rating, req.body.userId];
+                    let innerQueryString = 'UPDATE ratings SET rating = ? WHERE userId = ? AND postId= ?';
+                    let innerValues = [req.body.rating, req.body.userId,req.body.postId];
                     connection.query(innerQueryString, innerValues, (err, result, fields) => {
                         if (err) {
                             res.json({ success: false, message: err });
                         }
                         else {
-                            res.json(result);
+                            res.json({success:true , result:result});
                         }
                     });
                 }
@@ -54,7 +54,7 @@ class ratingModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json(result);
+                res.json(result[0]);
             }
         });
     }
