@@ -22,12 +22,49 @@ class postController {
                 res.json(err);
             } else {
 
+                if(req.file === undefined) {
+                    postModel.createPost(req, res, next, '/require/defaultthumbnail.jpg');
+                }
+               
+               else {
                 let thumbnail = '/thumbnail/' + req.file.filename;
-
                 postModel.createPost(req, res, next, thumbnail);
                 
+               } 
             }
         })
+    }
+
+    savepost = (req,res,next) => {
+       
+        var storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, 'public/thumbnail')
+            },
+            filename: (req, file, cb) => {
+                cb(null, file.fieldname + '-' + Date.now() + ".jpg")
+            }
+        });
+        var upload = multer({ storage: storage }).single('file');
+
+        upload(req, res, (err) => {
+
+            if (err) {
+
+                res.json(err);
+            } else {
+
+                if(req.file === undefined) {
+                    postModel.createPostFromDraft(req, res, next, '/require/defaultthumbnail.jpg');
+                }
+               
+               else {
+                let thumbnail = '/thumbnail/' + req.file.filename;
+                postModel.createPostFromDraft(req, res, next, thumbnail);
+                
+               } 
+            }
+        }) 
     }
 
     updatePost = (req, res, next) => {
@@ -85,6 +122,10 @@ class postController {
 
         // console.log(req.query.search);
         postModel.searchPost(req, res, next);
+    }
+
+    getDraftPost = (req,res,next) => {
+        postModel.getDraftPost(req,res,next);
     }
 }
 

@@ -4,14 +4,14 @@ import moment from 'moment';
 class postModel {
     createPost = (req, res, next,thumbnail) => {
         let timeStamp = moment().unix();
-        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail) VALUES (?,?,?,?,?,?,?,?,?)";
-        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail];
+        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-               console.log("Increate post") 
+            
                 let values = [req.body.userId, 2, result.insertId, moment().unix(),result.insertId];
                 connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
                     if (err) {
@@ -20,10 +20,48 @@ class postModel {
                     else {
                         res.json({ success: true, message: "Post created successfully" , id: result.insertId });
                     }
-                })
+                });
+            }
+        });
+    }
 
+    savePostAsDraft = (req,res,next,thumbnail) => {
+        let timeStamp = moment().unix();
+        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
+        connection.query(queryString, values, (err, result, field) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else { 
+                res.json({ success: true , message : " Post saved as draft " });
+            } 
+    });
+}
 
-                //res.json({ success: true, message: "Post created successfully" , id: result.insertId });
+    createPostFromDraft = (req,res,next , thumbnail) => {
+      
+      
+        let timeStamp = moment().unix();
+        let queryString = 'UPDATE posts SET title = ? , postContent = ?, category = ? , postDate = ? , postTimestamp = ?,    thumbnail = ? , isDraft = ? WHERE postId = ?';
+        let values = [ req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'),timeStamp,thumbnail, req.body.isDraft , req.body.postId];
+        console.log(values);
+
+        connection.query(queryString, values, (err, result, field) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+            
+                let values = [req.body.userId, 2,req.body.postId, moment().unix(),req.body.postId];
+                connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
+                    if (err) {
+                        res.json({ success: false, message: err });
+                    }
+                    else {
+                        res.json({ success: true, message: "Post created successfully" , id: req.body.postId });
+                    }
+                });
             }
         });
     }
@@ -43,7 +81,7 @@ class postModel {
     }
 
     getRecentPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY postTimeStamp DESC LIMIT 5";
+        let queryString = "SELECT * FROM posts WHERE isDraft = 0  ORDER BY postTimeStamp DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -55,7 +93,7 @@ class postModel {
     }
 
     getRecentUpdatedPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY updateTimeStamp DESC LIMIT 5";
+        let queryString = "SELECT * FROM posts  WHERE isDraft = 0 ORDER BY updateTimeStamp DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -68,7 +106,7 @@ class postModel {
 
     getCategoryPost = (req, res, next) => {
        
-        let queryString = "SELECT * FROM posts WHERE category = ?";
+        let queryString = "SELECT * FROM posts WHERE category = ? AND isDraft = 0 ";
         connection.query(queryString, req.params.category, (err, result, field) => {
             if (result.length === 0) {
                 res.json({ success: false, message: "No post avavilable of this category" });
@@ -80,7 +118,7 @@ class postModel {
     }
 
     getPopularPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY views DESC LIMIT 5";
+        let queryString = "SELECT * FROM posts  WHERE isDraft = 0 ORDER BY views DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -92,7 +130,7 @@ class postModel {
     }
 
     getMostLikedPost = (req, res, next) => {
-        let queryString = "SELECT * FROM posts ORDER BY likes DESC LIMIT 5";
+        let queryString = "SELECT * FROM posts  WHERE isDraft = 0 ORDER BY likes DESC LIMIT 5";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -104,7 +142,7 @@ class postModel {
     }
 
     getAllPosts = (req, res, next) => {
-        let queryString = "SELECT * FROM posts";
+        let queryString = "SELECT * FROM posts  WHERE isDraft = 0";
         connection.query(queryString, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
@@ -147,7 +185,7 @@ class postModel {
     }
 
     getPostsByYear = (req, res, next) => {
-        let queryString = "SELECT * FROM posts WHERE postDate LIKE ?";
+        let queryString = "SELECT * FROM posts WHERE postDate LIKE ? AND isDraft = 0";
         let values = ['%' + req.params.year];
 
         connection.query(queryString, values, (err, result, fields) => {
@@ -164,7 +202,7 @@ class postModel {
     }
 
     getPostsByMonth = (req, res, next) => {
-        let queryString = "SELECT * FROM posts WHERE postDate LIKE ?";
+        let queryString = "SELECT * FROM posts WHERE postDate LIKE ? AND isDraft = 0";
         let values = [req.params.month + '%'];
 
         connection.query(queryString, values, (err, result, fields) => {
@@ -181,7 +219,7 @@ class postModel {
     }
 
     getPostsByDay = (req, res, next) => {
-        let queryString = "SELECT * FROM posts WHERE postDate LIKE ?";
+        let queryString = "SELECT * FROM posts WHERE postDate LIKE ? AND isDraft = 0";
         let values = ['%/' + req.params.day + '/%'];
 
         connection.query(queryString, values, (err, result, fields) => {
@@ -233,7 +271,7 @@ class postModel {
         // WHERE MATCH(title) AGAINST( ?  IN NATURAL LANGUAGE MODE)
         // ORDER BY relevance DESC
         // LIMIT 10;`
-        let queryString = 'SELECT * FROM posts WHERE title LIKE ?'
+        let queryString = 'SELECT * FROM posts WHERE title LIKE ? AND isDraft = 0 '
         let values = ["%"+req.query.search+"%", ];
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -243,6 +281,20 @@ class postModel {
                 res.json(result);
             }
         });
+    }
+
+    getDraftPost = (req,res,next) => {
+        let queryString = " SELECT * FROM posts WHERE userId = ? AND isDraft = 1";
+        let values = [req.params.userId];
+        
+        connection.query(queryString,values,(err,result,fields) => {
+            if(err) {
+                res.json({success: false , message:err });
+            } 
+            else {
+                res.json({success:true, result: result});
+            }
+        })
     }
 }
 

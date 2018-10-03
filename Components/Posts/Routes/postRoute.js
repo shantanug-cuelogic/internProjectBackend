@@ -12,6 +12,7 @@ let router = express.Router();
 router.get('/', postController.getAllPosts);
 router.get('/getpost/:postId',postController.getPost);
 router.post('/create', postController.createPost);
+router.put('/savepost',postController.savepost)
 router.put('/update', authenticator.auth,privileges.updatePost ,postController.updatePost);
 router.get('/recent', postController.getRecentPost);
 router.get('/recentupdated', postController.getRecentlyUpdatedPosts);
@@ -24,6 +25,7 @@ router.get('/popular', postController.getPopularPost);
 router.post('/delete', authenticator.auth, privileges.deletePost, postController.deletePost);
 router.get('/totalcomments/:postId', postController.noofComments);
 router.get('/search',postController.searchPost);
+router.get('/draft/:userId',postController.getDraftPost);
 router.use('/comment', commentRoute);
 router.use('/ratings', ratingRoute);
 router.use('/like',likeRoute);
