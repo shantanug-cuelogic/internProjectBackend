@@ -148,7 +148,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ result })
+                res.json({ success:true , result:result })
             }
         })
     }
@@ -196,7 +196,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json(result);
+                res.json({ success:true, result:result });
             }
         });
     }
@@ -213,7 +213,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json(result);
+                res.json({ success:true, result:result });
             }
         });
     }
@@ -230,7 +230,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json(result);
+                res.json({ success:true, result:result });
             }
         });
     }
