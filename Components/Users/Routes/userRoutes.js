@@ -17,6 +17,7 @@ router.put('/updateuserprofile', /* authenticator.auth, privileges.updateUser,*/
 router.put('/deleteuser', authenticator.auth, privileges.deleteUser, userController.deleteUser);
 router.get('/recentactivity/:userId', userController.getRecentActivity);
 router.get('/viewsperpost/:userId',userController.getViewsPerPost);
+router.get('/followersinfo/:userId', userController.getFollowerInfo);
 router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);
 router.get('/totalposts/:userId',userController.noofPosts);

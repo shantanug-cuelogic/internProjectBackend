@@ -249,6 +249,9 @@ class UserControllers {
     getViewsPerPost = (req,res,next) => {
         userModel.getViewsPerPost(req,res,next);
     }
+    getFollowerInfo = (req,res,next) => {
+        userModel.getFollowerInfo(req,res,next);
+    }
 
 }
 export default new UserControllers();
