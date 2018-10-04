@@ -259,6 +259,20 @@ class userModel {
         });
     }
 
+    getFollowerInfo = (req,res,next) => {
+        let queryString = "SELECT users.firstName , followerData.followTimeStamp FROM users INNER JOIN followerData ON users.userId = followerData.followerId WHERE followerData.userId = ? ";
+        let values = [ req.params.userId];
+        connection.query(queryString,values,(err,result,field)=>{
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                res.json({ success: true, result:result });
+            }
+        });
+    }
+    
+
 
 }
 export default new userModel();
