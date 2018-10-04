@@ -246,6 +246,18 @@ class userModel {
             }
         })
     }
+    getViewsPerPost = (req,res,next) => {
+        let queryString = 'SELECT posts.title , posts.views, posts.postId FROM posts WHERE userId = ?'
+        let values = [ req.params.userId];
+        connection.query(queryString,values,(err,result,field)=>{
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                res.json({ success: true, result:result });
+            }
+        });
+    }
 
 
 }

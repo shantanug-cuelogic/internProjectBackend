@@ -63,6 +63,8 @@ class viewModel {
         });
     }
 
+    
+
 
 }
 export default new viewModel();

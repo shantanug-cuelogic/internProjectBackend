@@ -246,6 +246,9 @@ class UserControllers {
     noofComments = (req, res, next) => {
         userModel.noofComments(req, res, next);
     }
+    getViewsPerPost = (req,res,next) => {
+        userModel.getViewsPerPost(req,res,next);
+    }
 
 }
 export default new UserControllers();
