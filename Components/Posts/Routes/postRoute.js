@@ -26,6 +26,7 @@ router.post('/delete', authenticator.auth, privileges.deletePost, postController
 router.get('/totalcomments/:postId', postController.noofComments);
 router.get('/search',postController.searchPost);
 router.get('/draft/:userId',postController.getDraftPost);
+router.get('/history/:postId', postController.getPostActivity);
 router.use('/comment', commentRoute);
 router.use('/ratings', ratingRoute);
 router.use('/like',likeRoute);

@@ -271,6 +271,18 @@ class userModel {
             }
         });
     }
+
+    getAllusers = (req,res,next) => {
+        let queryString = " SELECT userId , firstName, LastName, profileImage FROM users";
+        connection.query(queryString,(err,result,field)=>{
+            if(err) {
+                res.json({success:false , message:err});
+            }
+            else {
+                res.json({success:true, result:result});
+            }
+        })
+    }
     
 
 
