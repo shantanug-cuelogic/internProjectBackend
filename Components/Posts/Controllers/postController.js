@@ -127,6 +127,9 @@ class postController {
     getDraftPost = (req,res,next) => {
         postModel.getDraftPost(req,res,next);
     }
+    getPostActivity = (req,res,next) => {
+        postModel.getPostActivity(req,res,next);
+    }
 }
 
 export default new postController();

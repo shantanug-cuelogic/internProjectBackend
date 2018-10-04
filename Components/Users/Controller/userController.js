@@ -252,6 +252,9 @@ class UserControllers {
     getFollowerInfo = (req,res,next) => {
         userModel.getFollowerInfo(req,res,next);
     }
+    getAllUsers = (req,res,next) => {
+        userModel.getAllusers(req,res,next);
+    }
 
 }
 export default new UserControllers();

@@ -296,6 +296,25 @@ class postModel {
             }
         })
     }
+
+    getPostActivity = (req, res, next) => {
+        let queryString = "CALL GetPostActivity( ? )";
+        let values = req.params.postId;
+
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else if (result[0].length === 0) {
+                res.json({ success: false, message: "No post activity to show" });
+            }
+            else {
+                res.json({ success: true, result: result[0] });
+            }
+        })
+    }
+
+
 }
 
 

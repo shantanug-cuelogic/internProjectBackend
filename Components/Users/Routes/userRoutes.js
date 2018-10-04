@@ -22,5 +22,6 @@ router.get('/totallikes/:userId',userController.noofLikes);
 router.get('/totalviews/:userId',userController.noofViews);
 router.get('/totalposts/:userId',userController.noofPosts);
 router.get('/totalcomments/:userId',userController.noofComments);
+router.get('/allusers',userController.getAllUsers);
 router.use('/follower',followerRoute);
 module.exports = router;
