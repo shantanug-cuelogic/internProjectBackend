@@ -53,6 +53,26 @@ class userModel {
         });
     }
 
+    authenticateUser = (req,res,next) => {
+
+        let email = req.body.email;
+        let queryString = "SELECT userId, email, isAdmin , followers, firstName , lastName, profileImage,gender  FROM users WHERE email = ?";
+
+        
+            connection.query(queryString, [email], (err, queryResult) => {
+
+
+                if (queryResult.length === 0) {
+                    res.json({ success: false, message: "User not found" })
+                }
+                else {
+
+                   res.json({success:true , result: queryResult[0]});
+                }
+            });
+        
+    }
+
     loginUser = (req, res, next) => {
 
         let email = req.body.email;

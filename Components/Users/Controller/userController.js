@@ -15,7 +15,7 @@ class UserControllers {
     }
 
     authenticateUser = (req, res, next) => {
-        res.json({ success: true });
+        userModel.authenticateUser(req,res,next);
     }
 
     loginUser = async (req, res, next) => {
