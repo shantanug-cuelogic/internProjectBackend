@@ -145,7 +145,7 @@ class userModel {
 
 
     userProfile = (req, res, next) => {
-        let queryString = 'SELECT userId , firstName , lastName , email, isAdmin , profileImage, gender FROM users WHERE userId = ?';
+        let queryString = 'SELECT userId , firstName , lastName ,followers ,email, isAdmin , profileImage, gender FROM users WHERE userId = ?';
         let values = req.params.userId;
 
         connection.query(queryString, values, (err, result, fields) => {
