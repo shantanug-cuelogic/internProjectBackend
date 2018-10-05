@@ -27,6 +27,7 @@ router.get('/totalcomments/:postId', postController.noofComments);
 router.get('/search',postController.searchPost);
 router.get('/draft/:userId',postController.getDraftPost);
 router.get('/history/:postId', postController.getPostActivity);
+router.get('/:userId', postController.getPostByUser);
 router.use('/comment', commentRoute);
 router.use('/ratings', ratingRoute);
 router.use('/like',likeRoute);

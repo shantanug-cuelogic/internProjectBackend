@@ -314,6 +314,20 @@ class postModel {
         })
     }
 
+    getPostByUser = (req,res,next) => {
+        let queryString = "SELECT * FROM posts WHERE userId = ?";
+        let values = req.params.userId;
+        connection.query(queryString,values,(err,result,fields)=>{
+            if(err) {
+                res.json({success:false, message:err});
+            }
+            else {
+                res.json({success:true, result: result});
+            }
+
+        })
+    }
+
 
 }
 

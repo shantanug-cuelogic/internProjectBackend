@@ -130,6 +130,9 @@ class postController {
     getPostActivity = (req,res,next) => {
         postModel.getPostActivity(req,res,next);
     }
+    getPostByUser = (req,res,next) => {
+        postModel.getPostByUser(req,res,next);
+    }
 }
 
 export default new postController();
