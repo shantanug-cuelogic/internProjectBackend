@@ -19,7 +19,7 @@ class FeedbackModel {
     showFeedback = (req,res,next) => {
         let queryString = `SELECT users.firstName,users.lastName,users.profileImage ,feedbacks.feedback,feedbacks.feedbackTimeStamp
         FROM feedbacks INNER JOIN users ON users.userId = feedbacks.userId
-        WHERE feedbacks.authorId = ?`;
+        WHERE feedbacks.authorId = ? ORDER BY feedbacks.feedbackTimeStamp DESC `;
         let values =  req.params.authorId;
         connection.query(queryString,values,(err,result,fields)=>{
             if(err) {

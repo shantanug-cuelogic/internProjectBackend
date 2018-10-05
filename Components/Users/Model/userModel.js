@@ -293,7 +293,7 @@ class userModel {
     }
 
     getAllusers = (req,res,next) => {
-        let queryString = " SELECT userId , firstName, LastName, profileImage FROM users";
+        let queryString = " SELECT userId , firstName, LastName, profileImage, isAdmin FROM users";
         connection.query(queryString,(err,result,field)=>{
             if(err) {
                 res.json({success:false , message:err});

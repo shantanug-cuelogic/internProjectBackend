@@ -4,6 +4,7 @@ import authenticator from '../../../Middleware/authenticationMiddleware';
 import privileges from '../../../Middleware/priveleges';
 import followerRoute from '../../Followers/Routes/FollowerRoutes';
 import feedbackRoute from '../../Feedback/Routes/FeedbackRoutes';
+import messageRoute from '../../Messages/Routes/messageRoutes';
 
 let router = express.Router();
 
@@ -26,4 +27,5 @@ router.get('/totalcomments/:userId',userController.noofComments);
 router.get('/allusers',userController.getAllUsers);
 router.use('/follower',followerRoute);
 router.use('/feedback', feedbackRoute);
+router.use('/message',messageRoute);
 module.exports = router;
