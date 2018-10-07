@@ -38,6 +38,8 @@ class privileges {
     }
 
     deletePost = (req,res,next) => {
+
+        console.log(req.body);
         let queryString = 'SELECT userId FROM posts WHERE postId = ?';
         let values = [req.body.postIdtoDelete];
 
@@ -46,6 +48,7 @@ class privileges {
                 res.json({success:false,message:err});
             }
             else {
+                console.log("===============>", result);
                 if(req.body.userId === result[0].userId || req.body.isAdmin === 1) {
                     next();
                 }
