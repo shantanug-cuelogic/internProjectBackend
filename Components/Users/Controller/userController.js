@@ -11,7 +11,7 @@ require('dotenv').config();
 class UserControllers {
 
     registerUser = (req, res, next) => {
-        userModel.registerUser(req, res, next, '/require/userimage.jpg');
+        userModel.registerUser(req, res, next, );
     }
 
     authenticateUser = (req, res, next) => {

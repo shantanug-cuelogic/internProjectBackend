@@ -9,7 +9,7 @@ class userModel {
     
 
 
-    registerUser = (req, res, next, path) => {
+    registerUser = (req, res, next) => {
 
         let pass = req.body.password;
         bcrypt.hash(pass, 4, (err, hash) => {
@@ -17,7 +17,7 @@ class userModel {
 
             else {
                 let queryString = "INSERT INTO users (firstName,lastName,passKey,email,isAdmin,securityQuestion, securityAnswer, profileImage, followers ) VALUES (?,?,?,?,?,?,?,?,?)";
-                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, 0, /*req.body.securityQuestion*/"xyz", /*req.body.securityAnswer*/ "xyz", path, 0]
+                let values = [req.body.firstName, req.body.lastName, hash, req.body.email, 0, /*req.body.securityQuestion*/"xyz", /*req.body.securityAnswer*/ "xyz", req.body.profileImage, 0]
                 connection.query(queryString, values, (error, results, fields) => {
                     if (error) {
                         res.json({ success: false, message: error });
