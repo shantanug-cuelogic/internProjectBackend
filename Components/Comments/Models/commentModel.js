@@ -20,7 +20,7 @@ class commentModel {
                         res.json({ success: false, message: err });
                     }
                     else {
-                        res.json({ success: true, message: "Comment Posted" });
+                        res.json({ success: true, message: "Comment Posted", insertId: result.insertId });
                     }
                 })
             }
