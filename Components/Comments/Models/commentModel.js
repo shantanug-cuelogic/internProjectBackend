@@ -3,29 +3,23 @@ import moment from 'moment';
 
 
 class commentModel {
-
     postComment = (req, res, next) => {
-        let queryString = 'INSERT INTO comments(postId,userId,commentContent, commentTimeStamp)VALUES(?,?,?,?)';
+        let queryString = 'CALL POST_COMMENT(?,?,?,?)';
         let values = [req.body.postId, req.body.userId, req.body.commentContent, moment().unix()];
         connection.query(queryString, values, (err, result, feilds) => {
             if (err) {
-                res.json({ success: false, message: err });
+                console.log(err);
             }
-
             else {
+                let commentIdReturned = JSON.stringify(result[0]);
+                let commentIdContent = commentIdReturned.split(":");
+                let commentId = commentIdContent[1].split("}");
+                res.json({ success: true, message: "Comment Posted", insertId: commentId[0] });
 
-                let values = [req.body.userId, 1, result.insertId, moment().unix(),req.body.postId];
-                connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
-                    if (err) {
-                        res.json({ success: false, message: err });
-                    }
-                    else {
-                        res.json({ success: true, message: "Comment Posted", insertId: result.insertId });
-                    }
-                })
             }
         });
     }
+
 
     getAllComments = (req, res, next) => {
         let queryString = 'SELECT users.firstName, users.lastName ,comments.userId, comments.commentId,comments.commentContent FROM users INNER JOIN comments ON users.userId=comments.userId WHERE postId = ?';
