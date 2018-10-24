@@ -2,64 +2,82 @@ import { connection } from '../../../app';
 import moment from 'moment';
 
 class postModel {
-    createPost = (req, res, next,thumbnail) => {
+    // createPost = (req, res, next,thumbnail) => {
+    //     let timeStamp = moment().unix();
+    //     let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    //     let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
+    //     connection.query(queryString, values, (err, result, field) => {
+    //         if (err) {
+    //             res.json({ success: false, message: err });
+    //         }
+    //         else {
+
+    //             let values = [req.body.userId, 2, result.insertId, moment().unix(),result.insertId];
+    //             connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
+    //                 if (err) {
+    //                     res.json({ success: false, message: err });
+    //                 }
+    //                 else {
+    //                     res.json({ success: true, message: "Post created successfully" , id: result.insertId });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
+
+    createPost = (req, res, next, thumbnail) => {
         let timeStamp = moment().unix();
-        let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
-        connection.query(queryString, values, (err, result, field) => {
+        let queryString = "CALL POST_BLOG(?,?,?,?,?,?,?,?)";
+        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), thumbnail, req.body.isDraft];
+        connection.query(queryString, values, (err, result) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-            
-                let values = [req.body.userId, 2, result.insertId, moment().unix(),result.insertId];
-                connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
-                    if (err) {
-                        res.json({ success: false, message: err });
-                    }
-                    else {
-                        res.json({ success: true, message: "Post created successfully" , id: result.insertId });
-                    }
-                });
+                let postIdReturned = JSON.stringify(result[0]);
+                let postIdContent = postIdReturned.split(":");
+                let postId = postIdContent[1].split("}")
+                res.json({ success: true, message: "Post created successfully", id: postId[0] });
+
             }
         });
     }
 
-    savePostAsDraft = (req,res,next,thumbnail) => {
+    savePostAsDraft = (req, res, next, thumbnail) => {
         let timeStamp = moment().unix();
         let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
+        let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'), thumbnail, req.body.isDraft];
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
-            else { 
-                res.json({ success: true , message : " Post saved as draft " });
-            } 
-    });
-}
+            else {
+                res.json({ success: true, message: " Post saved as draft " });
+            }
+        });
+    }
 
-    createPostFromDraft = (req,res,next , thumbnail) => {
-      
-      
+    createPostFromDraft = (req, res, next, thumbnail) => {
+
+
         let timeStamp = moment().unix();
         let queryString = 'UPDATE posts SET title = ? , postContent = ?, category = ? , postDate = ? , postTimestamp = ?,    thumbnail = ? , isDraft = ? WHERE postId = ?';
-        let values = [ req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'),timeStamp,thumbnail, req.body.isDraft , req.body.postId];
-        console.log(values);
+        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), timeStamp, thumbnail, req.body.isDraft, req.body.postId];
+  
 
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-            
-                let values = [req.body.userId, 2,req.body.postId, moment().unix(),req.body.postId];
+
+                let values = [req.body.userId, 2, req.body.postId, moment().unix(), req.body.postId];
                 connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
                     if (err) {
                         res.json({ success: false, message: err });
                     }
                     else {
-                        res.json({ success: true, message: "Post created successfully" , id: req.body.postId });
+                        res.json({ success: true, message: "Post created successfully", id: req.body.postId });
                     }
                 });
             }
@@ -68,7 +86,7 @@ class postModel {
 
     updatePost = (req, res, next) => {
         let queryString = 'UPDATE posts SET title =? , postContent = ?, category = ? , updateDate = ? , updateTimeStamp = ? WHERE postId = ?';
-        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(),req.body.postIdtoUpdate];
+        let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), moment().unix(), req.body.postIdtoUpdate];
 
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
@@ -105,14 +123,14 @@ class postModel {
     }
 
     getCategoryPost = (req, res, next) => {
-       
+
         let queryString = "SELECT * FROM posts WHERE category = ? AND isDraft = 0 ";
         connection.query(queryString, req.params.category, (err, result, field) => {
             if (result.length === 0) {
                 res.json({ success: false, message: "No post avavilable of this category" });
             }
             else {
-                res.json({ success:true, result:result });
+                res.json({ success: true, result: result });
             }
         });
     }
@@ -148,17 +166,17 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success:true , result:result })
+                res.json({ success: true, result: result })
             }
         })
     }
 
-    updateLikeAndViews = (postId,req, res, next) => {
+    updateLikeAndViews = (postId, req, res, next) => {
         let queryString = "update posts set views = (select count(viewId) from views where postId = ?) , likes = (select count(likeId) from likes where postId = ?)where postId = ?;"
-        let values = [postId,postId,postId];
+        let values = [postId, postId, postId];
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
-               
+
                 console.log(err)
             }
         });
@@ -178,8 +196,8 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                
-                res.json({ success:true, result:result });
+
+                res.json({ success: true, result: result });
             }
         })
     }
@@ -196,7 +214,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json({ success:true, result:result });
+                res.json({ success: true, result: result });
             }
         });
     }
@@ -213,7 +231,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json({ success:true, result:result });
+                res.json({ success: true, result: result });
             }
         });
     }
@@ -230,7 +248,7 @@ class postModel {
                 res.json({ success: false, message: "No Post found!! Try some other filter" });
             }
             else {
-                res.json({ success:true, result:result });
+                res.json({ success: true, result: result });
             }
         });
     }
@@ -265,34 +283,34 @@ class postModel {
         });
     }
 
-    searchPost = (req,res,next) => {
+    searchPost = (req, res, next) => {
         // let queryString = `SELECT title,postId, MATCH(title) AGAINST ( ? IN BOOLEAN MODE) AS relevance
         // FROM posts
         // WHERE MATCH(title) AGAINST( ?  IN NATURAL LANGUAGE MODE)
         // ORDER BY relevance DESC
         // LIMIT 10;`
         let queryString = 'SELECT * FROM posts WHERE title LIKE ? AND isDraft = 0 '
-        let values = ["%"+req.query.search+"%", ];
+        let values = ["%" + req.query.search + "%",];
         connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({success:true,result:result});
+                res.json({ success: true, result: result });
             }
         });
     }
 
-    getDraftPost = (req,res,next) => {
+    getDraftPost = (req, res, next) => {
         let queryString = " SELECT * FROM posts WHERE userId = ? AND isDraft = 1";
         let values = [req.params.userId];
-        
-        connection.query(queryString,values,(err,result,fields) => {
-            if(err) {
-                res.json({success: false , message:err });
-            } 
+
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
             else {
-                res.json({success:true, result: result});
+                res.json({ success: true, result: result });
             }
         })
     }
@@ -314,15 +332,15 @@ class postModel {
         })
     }
 
-    getPostByUser = (req,res,next) => {
+    getPostByUser = (req, res, next) => {
         let queryString = "SELECT * FROM posts WHERE userId = ? AND isDraft = 0 ";
         let values = req.params.userId;
-        connection.query(queryString,values,(err,result,fields)=>{
-            if(err) {
-                res.json({success:false, message:err});
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
             }
             else {
-                res.json({success:true, result: result});
+                res.json({ success: true, result: result });
             }
 
         })
