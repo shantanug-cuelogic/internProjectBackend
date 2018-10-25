@@ -2,28 +2,6 @@ import { connection } from '../../../app';
 import moment from 'moment';
 
 class postModel {
-    // createPost = (req, res, next,thumbnail) => {
-    //     let timeStamp = moment().unix();
-    //     let queryString = "INSERT INTO posts(userId,title,postTimestamp,postContent,category,views,likes,postDate,thumbnail,isDraft) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    //     let values = [req.body.userId, req.body.title, timeStamp, req.body.postContent, req.body.category, 0, ' ', moment().format('M/D/YYYY'),thumbnail, req.body.isDraft];
-    //     connection.query(queryString, values, (err, result, field) => {
-    //         if (err) {
-    //             res.json({ success: false, message: err });
-    //         }
-    //         else {
-
-    //             let values = [req.body.userId, 2, result.insertId, moment().unix(),result.insertId];
-    //             connection.query("CALL addUserActivity(?,?,?,?,?)", values, (err, queryResult, field) => {
-    //                 if (err) {
-    //                     res.json({ success: false, message: err });
-    //                 }
-    //                 else {
-    //                     res.json({ success: true, message: "Post created successfully" , id: result.insertId });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
 
     createPost = (req, res, next, thumbnail) => {
         let timeStamp = moment().unix();
@@ -63,7 +41,7 @@ class postModel {
         let timeStamp = moment().unix();
         let queryString = 'UPDATE posts SET title = ? , postContent = ?, category = ? , postDate = ? , postTimestamp = ?,    thumbnail = ? , isDraft = ? WHERE postId = ?';
         let values = [req.body.title, req.body.postContent, req.body.category, moment().format('M/D/YYYY'), timeStamp, thumbnail, req.body.isDraft, req.body.postId];
-  
+
 
         connection.query(queryString, values, (err, result, field) => {
             if (err) {
@@ -160,15 +138,49 @@ class postModel {
     }
 
     getAllPosts = (req, res, next) => {
-        let queryString = "SELECT * FROM posts  WHERE isDraft = 0";
-        connection.query(queryString, (err, result, field) => {
+        if (req.query.postId !== undefined) {
+            this.updateLikeAndViews(req.query.postId);
+            let queryString = "SELECT * FROM posts WHERE postId = ?"
+            let values = req.query.postId;
+            connection.query(queryString, values, (err, result, fields) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                }
+                else if (result.length === 0) {
+                    res.json({ success: false, message: "No Post found!! Try some other filter" });
+                }
+                else {
+
+                    res.json({ success: true, result: result });
+                }
+            })
+        }
+        else if(req.body.userId !== undefined){
+            let queryString = "SELECT * FROM posts WHERE userId = ? AND isDraft = 0 ";
+        let values = req.params.userId;
+        connection.query(queryString, values, (err, result, fields) => {
             if (err) {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success: true, result: result })
+                res.json({ success: true, result: result });
             }
+
         })
+        }
+
+        else {
+            let queryString = "SELECT * FROM posts  WHERE isDraft = 0";
+            connection.query(queryString, (err, result, field) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                }
+                else {
+                    res.json({ success: true, result: result })
+                }
+            })
+        }
+
     }
 
     updateLikeAndViews = (postId, req, res, next) => {
@@ -180,26 +192,6 @@ class postModel {
                 console.log(err)
             }
         });
-    }
-
-    getPost = (req, res, next) => {
-        this.updateLikeAndViews(req.params.postId);
-
-        let queryString = "SELECT * FROM posts WHERE postId = ?"
-        let values = req.params.postId;
-
-        connection.query(queryString, values, (err, result, fields) => {
-            if (err) {
-                res.json({ success: false, message: err });
-            }
-            else if (result.length === 0) {
-                res.json({ success: false, message: "No Post found!! Try some other filter" });
-            }
-            else {
-
-                res.json({ success: true, result: result });
-            }
-        })
     }
 
     getPostsByYear = (req, res, next) => {
@@ -267,8 +259,6 @@ class postModel {
         });
     }
 
-
-
     noofComments = (req, res, next) => {
         let queryString = 'SELECT COUNT(commentId) AS Count FROM comments INNER JOIN posts ON posts.postId = comments.postId WHERE comments.postId = ?';
         let values = [req.params.postId];
@@ -284,11 +274,6 @@ class postModel {
     }
 
     searchPost = (req, res, next) => {
-        // let queryString = `SELECT title,postId, MATCH(title) AGAINST ( ? IN BOOLEAN MODE) AS relevance
-        // FROM posts
-        // WHERE MATCH(title) AGAINST( ?  IN NATURAL LANGUAGE MODE)
-        // ORDER BY relevance DESC
-        // LIMIT 10;`
         let queryString = 'SELECT * FROM posts WHERE title LIKE ? AND isDraft = 0 '
         let values = ["%" + req.query.search + "%",];
         connection.query(queryString, values, (err, result, fields) => {
@@ -331,21 +316,6 @@ class postModel {
             }
         })
     }
-
-    getPostByUser = (req, res, next) => {
-        let queryString = "SELECT * FROM posts WHERE userId = ? AND isDraft = 0 ";
-        let values = req.params.userId;
-        connection.query(queryString, values, (err, result, fields) => {
-            if (err) {
-                res.json({ success: false, message: err });
-            }
-            else {
-                res.json({ success: true, result: result });
-            }
-
-        })
-    }
-
 
 }
 

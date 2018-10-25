@@ -6,11 +6,14 @@ import likeRoute from '../../Likes/Routes/likeRoutes';
 import viewRoute from '../../Views/Routes/viewRoutes';
 import authenticator from '../../../Middleware/authenticationMiddleware';
 import privileges from '../../../Middleware/priveleges';
+import commentController from '../../Comments/Controllers/commentController';
+import ratingController from '../../Ratings/Controllers/ratingController';
+import likeController from '../../Likes/Controller/likeController';
+import viewController from '../../Views/Controller/viewController';
 
 let router = express.Router();
 
 router.get('/', postController.getAllPosts);
-router.get('/getpost/:postId',postController.getPost);
 router.post('/create', postController.createPost);
 router.put('/savepost',postController.savepost)
 router.put('/update', authenticator.auth,privileges.updatePost ,postController.updatePost);
@@ -25,11 +28,18 @@ router.get('/popular', postController.getPopularPost);
 router.post('/delete', authenticator.auth, privileges.deletePost, postController.deletePost);
 router.get('/totalcomments/:postId', postController.noofComments);
 router.get('/search',postController.searchPost);
-router.get('/draft/:userId',postController.getDraftPost);
-router.get('/history/:postId', postController.getPostActivity);
-router.get('/:userId', postController.getPostByUser);
-router.use('/comment', commentRoute);
+router.get('/:userId/draft/',postController.getDraftPost);
+router.get('/:postId/history', postController.getPostActivity);
+
+router.use('/:postId/comments', commentController.getAllComments);
+router.use('/comments', commentRoute);
+router.get('/:postId/ratings', ratingController.getRating);
+
 router.use('/ratings', ratingRoute);
-router.use('/like',likeRoute);
-router.use('/view/',viewRoute);
+
+router.use('/likes',likeRoute);
+router.get('/:postId/likes',likeController.totalLikes);
+
+router.use('/views/',viewRoute);
+router.get('/:postId/views/',viewController.totalViewToPost);
 module.exports = router;

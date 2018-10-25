@@ -6,7 +6,7 @@ import priveleges from '../../../Middleware/priveleges';
 const router = express.Router();
 
 
-router.get('/:postId', commentController.getAllComments);
+router.get('/', commentController.getAllComments);
 router.put('/', authenticator.auth, commentController.postComment);
 router.put('/delete', authenticator.auth, commentController.deleteComment);
 router.put('/update', authenticator.auth, priveleges.updateComment, commentController.updateComment);
