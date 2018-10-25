@@ -22,7 +22,6 @@ class commentModel {
 
 
     getAllComments = (req, res, next) => {
-       console.log("======in commensts======>",req.params.postId);
         let queryString = 'SELECT users.firstName, users.lastName ,comments.userId, comments.commentId,comments.commentContent FROM users INNER JOIN comments ON users.userId=comments.userId WHERE postId = ?';
         let values = [req.params.postId];
 

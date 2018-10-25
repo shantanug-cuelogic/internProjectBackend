@@ -12,6 +12,7 @@ let router = express.Router();
 router.post('/user/authenticate',authenticator.auth,userController.authenticateUser);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
+router.get('/user/:userId/posts',postController.getPostByUser)
 router.post('/user/forgotPassword', userController.forgotPassword);
 router.post('/user/token', userController.checkForgetToken);
 router.put('/user/changepassword',userController.changePassword);

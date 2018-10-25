@@ -4,7 +4,6 @@ import moment from 'moment';
 class likeModel {
 
     updateLikeAndViews = (postId,req, res, next) => {
-        console.log("IN UPDATE=======>");
          let queryString = "update posts set views = (select count(viewId) from views where postId = ?) , likes = (select count(likeId) from likes where postId = ?)where postId = ?;"
          let values = [postId,postId,postId];
          connection.query(queryString, values, (err, result, fields) => {
@@ -36,7 +35,6 @@ class likeModel {
                     }
                 })
 
-               // res.json({ success: true, message: "Liked Successfully" });
             }
         });
         
@@ -68,7 +66,7 @@ class likeModel {
             }
             else {
 
-                res.json({ success: true, message: "Successfully", count: result[0].totalLikes });
+                res.json({ success: true, message: "Successfully", result: result[0].totalLikes });
             }
     })
 }

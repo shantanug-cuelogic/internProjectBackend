@@ -8,7 +8,7 @@ require('dotenv').config();
 class editorController {
 
     imageUpload = (req,res,next) => {
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
               cb(null, 'public/images')
             },
@@ -16,7 +16,7 @@ class editorController {
               cb(null, file.fieldname + '-' + Date.now() + ".jpg" )
             }
         });
-        var upload = multer({storage: storage}).single('file_name');
+        let upload = multer({storage: storage}).single('file_name');
 
         upload(req,res,(err) =>{
        
@@ -30,7 +30,7 @@ class editorController {
     }
 
     fileUpload = (req,res,next) => {
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
               cb(null, 'public/')
             },
@@ -38,7 +38,7 @@ class editorController {
               cb(null, file.fieldname + '-' + Date.now()  )
             }
         });
-        var upload = multer({storage: storage}).single('file_name');
+        let upload = multer({storage: storage}).single('file_name');
 
         upload(req,res,(err) =>{
        
@@ -50,7 +50,7 @@ class editorController {
         })
     }
     videoUpload = (req,res,next) => {
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
               cb(null, 'public/videos')
             },
@@ -58,7 +58,7 @@ class editorController {
               cb(null, file.fieldname + '-' + Date.now() + ".mp4" )
             }
         });
-        var upload = multer({storage: storage}).single('file_name');
+        let upload = multer({storage: storage}).single('file_name');
 
         upload(req,res,(err) =>{
        

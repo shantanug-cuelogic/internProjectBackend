@@ -1,14 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 import mysql from 'mysql';
 import userRoute from './Components/Users/Routes/userRoutes';
 import postRoute from './Components/Posts/Routes/postRoute';
 import editorRoute from './Components/Editor/Routes/editorRoute';
 
-var app = express();
+let app = express();
 
 const connection = mysql.createConnection({
   host: 'localhost',

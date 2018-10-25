@@ -14,9 +14,9 @@ import viewController from '../../Views/Controller/viewController';
 let router = express.Router();
 
 router.get('/', postController.getAllPosts);
-router.post('/create', postController.createPost);
+router.post('/', postController.createPost);
 router.put('/savepost',postController.savepost)
-router.put('/update', authenticator.auth,privileges.updatePost ,postController.updatePost);
+router.put('/', authenticator.auth,privileges.updatePost ,postController.updatePost);
 router.get('/recent', postController.getRecentPost);
 router.get('/recentupdated', postController.getRecentlyUpdatedPosts);
 router.get('/mostliked',postController.getMostLikedPost);

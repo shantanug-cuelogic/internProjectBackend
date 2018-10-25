@@ -48,7 +48,6 @@ class privileges {
                 res.json({success:false,message:err});
             }
             else {
-                console.log("===============>", result);
                 if(req.body.userId === result[0].userId || req.body.isAdmin === 1) {
                     next();
                 }

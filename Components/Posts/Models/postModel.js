@@ -151,7 +151,7 @@ class postModel {
                 }
                 else {
 
-                    res.json({ success: true, result: result });
+                    res.json({ success: true, result: result[0] });
                 }
             })
         }
@@ -163,7 +163,7 @@ class postModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json({ success: true, result: result });
+                res.json({ success: true, result: result[0] });
             }
 
         })
@@ -315,6 +315,23 @@ class postModel {
                 res.json({ success: true, result: result[0] });
             }
         })
+    }
+    getPostByUser = (req, res, next) => {
+     
+        let queryString = "SELECT * FROM posts WHERE userId = ? AND isDraft = 0";
+        let values = [req.params.userId];
+
+        connection.query(queryString, values, (err, result, fields) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            }
+            else if (result.length === 0) {
+                res.json({ success: false, message: "No Post found!" });
+            }
+            else {
+                res.json({ success: true, result: result });
+            }
+        });
     }
 
 }

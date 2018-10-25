@@ -134,7 +134,7 @@ class userModel {
         let values = req.body.forgetToken;
         connection.query(queryString, [values], (err, queryResult) => {
             if (queryResult.length === 0) {
-                res.json({ success: false, message: "User not found" })
+                res.json({ success: false, message: "User not found" });
             }
             else {
                 res.json({ success: true, result: queryResult })
@@ -157,7 +157,7 @@ class userModel {
                 res.json({ success: false, message: "User not found" });
             }
             else {
-                res.json(result);
+                res.json({ success: true, result: result });
             }
         });
     }

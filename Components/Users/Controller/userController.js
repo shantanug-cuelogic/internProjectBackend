@@ -200,7 +200,7 @@ class UserControllers {
     }
 
     updateUserProfile = (req, res, next) => {
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, 'public/profilePicture')
             },
@@ -208,7 +208,7 @@ class UserControllers {
                 cb(null, file.fieldname + '-' + Date.now() + ".jpg")
             }
         });
-        var upload = multer({ storage: storage }).single('file');
+        let upload = multer({ storage: storage }).single('file');
 
         upload(req, res, (err) => {
 

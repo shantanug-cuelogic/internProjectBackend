@@ -37,7 +37,7 @@ class viewModel {
             }
             else {
                 this.updateLikeAndViews(req.params.postId);
-                res.json({ success: true, message: "Successfully", count: result[0].totalviews });
+                res.json({ success: true, message: "Successfully", result: result[0].totalviews });
             }
         })
     }

@@ -3,8 +3,6 @@ import { connection } from '../../../app';
 class ratingModel {
 
     giveRating = (req, res, next) => {
-
-        console.log("=================>",req.body.rating)
         let queryString = 'SELECT * FROM ratings WHERE userId= ? AND postId = ?';
         let values = [req.body.userId, req.body.postId];
 
@@ -54,7 +52,7 @@ class ratingModel {
                 res.json({ success: false, message: err });
             }
             else {
-                res.json(result[0]);
+                res.json({ success: false, result: result[0].Ratings });
             }
         });
     }

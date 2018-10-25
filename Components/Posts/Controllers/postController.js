@@ -5,7 +5,7 @@ class postController {
     createPost = (req, res, next) => {
 
 
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, 'public/thumbnail')
             },
@@ -13,7 +13,7 @@ class postController {
                 cb(null, file.fieldname + '-' + Date.now() + ".jpg")
             }
         });
-        var upload = multer({ storage: storage }).single('file');
+        let upload = multer({ storage: storage }).single('file');
 
         upload(req, res, (err) => {
 
@@ -37,7 +37,7 @@ class postController {
 
     savepost = (req,res,next) => {
        
-        var storage = multer.diskStorage({
+        let storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, 'public/thumbnail')
             },
@@ -45,7 +45,7 @@ class postController {
                 cb(null, file.fieldname + '-' + Date.now() + ".jpg")
             }
         });
-        var upload = multer({ storage: storage }).single('file');
+        let upload = multer({ storage: storage }).single('file');
 
         upload(req, res, (err) => {
 
@@ -119,8 +119,6 @@ class postController {
     }
 
     searchPost = (req, res, next) => {
-
-        // console.log(req.query.search);
         postModel.searchPost(req, res, next);
     }
 
